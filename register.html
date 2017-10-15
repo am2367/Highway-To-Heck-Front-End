@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+  </head>
+
+  <body>
+<div id = "output">
+	<p>status</p>
+    </div>
+    <div class="container">
+      <form class="form-signin" id="form">
+        <h2 class="form-signin-heading">Please create an account</h2>
+        <label for="inputName" class="sr-only">Username</label>
+        <input type="username" id="inputName" class="form-control" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+	<label for="confirmPassword" class="sr-only">Confirm Password</label>
+        <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitCredentials()">Submit</button>
+      </form>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+	<script>
+function submitCredentials()
+{
+	var uname = document.getElementById("inputName").value;
+	var pword = document.getElementById("inputPassword").value;
+	if (confirmPassword() == true){	
+		sendRegisterRequest(uname,pword);
+		window.location.href='index.html';
+		return 0;
+	}
+	else if (confirmPassword() == false){
+		alert("Passwords do not match");
+		document.getElementById("form").reset();
+	}
+}
+function HandleRegisterResponse(response)
+{
+	var text = JSON.parse(response);
+	document.getElementById("output").innerHTML = "response: "+text+"<p>";
+}
+
+function sendRegisterRequest(username,password)
+{
+	var request = new XMLHttpRequest();
+	request.open("POST","handleRequests.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function ()
+	{
+		
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+			HandleRegisterResponse(this.responseText);
+		}		
+	}
+	request.send("type=register&uname="+username+"&pword="+password);
+}
+function confirmPassword(){
+	var pword = document.getElementById("inputPassword").value;
+	var confirmpword = document.getElementById("confirmPassword").value;
+	if (pword == confirmpword)
+		return true;
+	else
+		return false;
+}
+
+</script>
+  </body>
+</html>
