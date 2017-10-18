@@ -49,7 +49,7 @@
 	<script>
 function submitLogin()
 {
-
+	
 	var uname = document.getElementById("inputName").value;
 	var pword = document.getElementById("inputPassword").value;
 	document.getElementById("output").innerHTML = "username: " + uname + "<p>password: "+pword+"<p>";	
@@ -58,8 +58,11 @@ function submitLogin()
 }
 function HandleLoginResponse(response)
 {
-	var text = JSON.parse(response);
-	document.getElementById("output").innerHTML = "response: "+text+"<p>";
+	var obj = JSON.parse(response);
+	if (obj["status"] == true)
+		window.location.href='datasearch.html';
+	else
+		alert("incorrect username or password");
 }
 function sendLoginRequest(username,password)
 {
@@ -71,8 +74,7 @@ function sendLoginRequest(username,password)
 		
 		if ((this.readyState == 4)&&(this.status == 200))
 		{
-			//alert("response received");
-			HandleLoginResponse(this.responseText);
+			HandleLoginResponse(this.responseText);				
 		}		
 	}
 	request.send("type=login&uname="+username+"&pword="+password);

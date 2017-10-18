@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Highway to Heck</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+  <script>
+	$(document).ready(function(){
+/*		$("button").click(function() {
+			var tableID = $(this).attr('id') + "_table";
+			var chartID = $(this).attr('id') + "_chart";
+			var span = $(this).find("span");
+			var text = span.text();
+			
+			if (text == "+") {
+				span.text('-');
+                	var table = "<div class=\"panel panel-default, col-sm-10 col-sm-offset-1\" style=\"margin-top:10px; border-color:gray;\"><table style=\"width:100%\" id=\"" + tableID + "\">" + "<thead><tr><th>Log_entry</th><th>Instance</th><th>ThreadID</th><th>ShipmentID</th><th>ServiceModule</th><th>Duration_of_service</th>" +"<th>Start_time_of_service</th><th>Country_Key</th><th>SLIC</th><th>logMessage</th></tr></thead></table></div>";
+				//addTable($(this));   
+				//var table = ("<div class=\"panel panel-default, col-sm-10 col-sm-offset-1\" style=\"margin-top:10px; border-color:gray\"><table id=\"" + tableID + "\" class=\"display\" cellspacing=\0\" width=\"100%\">"
+							//+ "<thead><tr><th>Name</th><th>Title</th></tr></thead><tbody><tr><td>Wayne Nilsson</td><td>App Dev Manager</td></tr><tr><td>Jason Biddelman</td><td>Lead Applications Developer</td></tr></tbody></table></div>");
+				$(this).parent().after(table);
+				var tableData = $('#' + tableID).dataTable( {
+					responsive: true,
+					"paging": true,
+					"pagingType": "full_numbers",
+					"processing": true,
+					"iDisplayLength": 10,
+					"deferRender": true,
+					"language": {"emptyTable":"Retrieving Data..."},
+					ajax: {
+					url: "test.txt",
+					//url: "test.txt",
+					dataSrc: '',	
+					contentType: "application/json; charset=utf-8"
+					},
+					 
+					Columns: [
+					    {'Data': 'Log_entry', 'sType': 'string', "bVisible": true, "bSearchable": false},
+					    {'Data': 'Instance', 'sType': 'string', 'bVisible': true},
+					    {'Data': 'ThreadID', 'sType': 'string', 'bVisible': true},
+					    {'Data': 'ShipmentID', 'sType': 'string', 'bVisible': true},
+					    {'Data': 'ServiceModule', 'sType': 'string', 'bVisible': true},
+					    {'Data': 'Duration_of_service', 'sType': 'string', 'bVisible': true},
+					    {'Data': 'Start_time_of_service', 'sType': 'string', 'bVisible': true},
+					    {'Data': 'Country_Key', 'sType': 'string', 'bVisible': true},
+					    {'Data': 'SLIC', 'sType': 'string', 'bVisible': true},
+					    {'Data': 'logMessage', 'sType': 'string', 'bVisible': true}
+					    ]
+					}); 
+				} 
+		});*/					
+		$(".dropdown-menu li a").click(function(){
+		$(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+		$(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+		});
+	});
+	
+	function isNumber(evt) {
+		evt = (evt) ? evt : window.event;
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if ( (charCode > 31 && charCode < 48) || charCode > 57) {
+		    return false;
+        	}
+        	return true;
+    	}
+  </script>
+  
+</head>
+<body>
+
+<div class="container">
+  <h2>Highway to Heck</h2>
+  <p>Location</p>
+  <form class="form-inline">
+    <div class="well">
+		<div class="dropdown">
+		 <label for="zip">Zip:</label>
+		 <input type="text" onkeypress="return isNumber(event)" class="form-control" id="zip" placeholder="Enter zip" name="zip" maxlength="6">
+			<label for="radius">Radius:</label>
+			<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="dropdownMenuRadius" aria-haspopup="true" aria-expanded="true">Choose Distance
+			<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenuRadius">
+				<li><a href="#" data-value="All">All</a></li>
+				<li><a href="#" data-value="10 miles">10 miles</a></li>
+				<li><a href="#" data-value="15 miles">15 miles</a></li>
+				<li><a href="#" data-value="25 miles">25 miles</a></li>
+			</ul>
+		</div>
+	</div>
+  </form>
+  <p>Price</p>
+  <form class="form-inline">
+	<div class="well">
+		<label for="min">Min:</label>
+		<input type="text" min="0" onkeypress="return isNumber(event)" class="form-control" id="min" placeholder="Enter minimum price" name="min">
+		<label for="max">Max:</label>
+		<input type="text" onkeypress="return isNumber(event)" class="form-control" id="max" placeholder="Enter maximum price" name="max">
+	</div>
+  </form>
+  <p>Vehicle Type</p>
+  <form class="form-inline">
+	<div class="well">
+		<label for="make">Make:</label>
+		<input type="make" class="form-control" id="make" placeholder="Enter make" name="make">
+		<label for="model">Model:</label>
+		<input type="model" class="form-control" id="model" placeholder="Enter model" name="model">
+		<label for="model">Year:</label>
+		<input type="model" class="form-control" id="model" placeholder="Enter model" name="model">
+	</div>
+  </form>
+  <button type="button" class="btn pull-right btn-success">Search!</button>
+</div>
+
+</body>
+</html>

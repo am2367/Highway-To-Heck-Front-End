@@ -18,19 +18,14 @@ switch ($request["type"])
 		$password = $request["pword"];
 		$type = $request["type"];
 		$hashedPass = sha1($password);
-		$response = "Login";
-		createClient($type, $username, $hashedPass);
-		//rabbitMQLogin($username, $hashedPassword);
+		$response = createClient($type, $username, $hashedPass);
 	break;
 	case "register":
-		echo "hello1!".PHP_EOL;	
 		$username = $request["uname"];
 		$password = $request["pword"];
 		$type = $request["type"];
 		$hashedPass = sha1($password);
-		$response = "Register";
-		createClient($type, $username, $hashedPass);
-		//rabbitMQLogin($username, $hashedPassword);
+		$response = createClient($type, $username, $hashedPass);
 	break;
 }
 echo json_encode($response);
