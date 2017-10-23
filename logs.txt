@@ -1,0 +1,3 @@
+hello{Server received request and processedServer received request and processed
+Server received request and processed
+2017-10-22 19:05:28	Server received request and processed

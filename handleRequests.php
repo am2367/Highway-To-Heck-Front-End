@@ -1,15 +1,15 @@
 <?php
 include("../../../home/alex/git/it490f17/testRabbitMQClient.php");
-
+include("writeLogs.php");
 
 if (!isset($_POST))
 {
 	$msg = "NO POST MESSAGE SET";
+	writeLogs($msg);//write to log file
 	echo json_encode($msg);
 	exit(0);
 }
 $postRequest = $_POST;
-//$getRequest = $_GET;
 $response = "unsupported request type";
 
 switch ($postRequest["type"])
@@ -18,14 +18,14 @@ switch ($postRequest["type"])
 		$username = $postRequest["uname"];
 		$password = $postRequest["pword"];
 		$type = $postRequest["type"];
-		$hashedPass = sha1($password);
+		$hashedPass = sha1($password);//hash the pass
 		$response = createClient($type, $username, $hashedPass);
 	break;
 	case "register":
 		$username = $postRequest["uname"];
 		$password = $postRequest["pword"];
 		$type = $postRequest["type"];
-		$hashedPass = sha1($password);
+		$hashedPass = sha1($password);//hash the pass
 		$response = createClient($type, $username, $hashedPass);
 	break;
 	case "listings":
@@ -40,18 +40,9 @@ switch ($postRequest["type"])
 		$response = createClientDMZ($type, $zip, $radius, $minPrice, $maxPrice, $make, $model, $year);
 	break; 
 }
-/*switch ($getRequest["type"]){
-	case "listings":
-		$zip = $getRequest["zip"];
-		$radius = $getRequest["radius"];
-		$minPrice = $getRequest["minPrice"];
-		$maxPrice = $getRequest["maxPrice"];
-		$make = $getRequest["make"];
-		$model = $getRequest["model"];
-		$year = $getRequest["year"];
-		$response = createClientDMZ($type, $username, $hashedPass);
-	break; 
-}*/
+//write to log file
+writeLogs($response["message"]);
+//turn the response into a JSON object
 echo json_encode($response);
 exit(0);
 ?>

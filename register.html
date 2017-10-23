@@ -55,11 +55,11 @@ function submitCredentials()
 function HandleRegisterResponse(response)
 {
 	
-	if (response.status == "true")
+	if (response.status == true)
 		window.location.href='index.html';
 	else
 		alert("Registration failed! Please try again.");
-	document.getElementById("output").innerHTML = "response: "+text+"<p>";
+	//document.getElementById("output").innerHTML = "response: "+text+"<p>";
 }
 
 function sendRegisterRequest(username,password)

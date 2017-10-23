@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <h1 align="center">Highway to Heck</h1>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -18,9 +19,9 @@
 
   <body>
 
-    <div id = "output">
+    <!--<div id = "output">
 	<p>status</p>
-    </div>
+    </div>-->
     <div class="container">
 
       <form class="form-signin">
@@ -52,12 +53,13 @@ function submitLogin()
 	
 	var uname = document.getElementById("inputName").value;
 	var pword = document.getElementById("inputPassword").value;
-	document.getElementById("output").innerHTML = "username: " + uname + "<p>password: "+pword+"<p>";	
+	//document.getElementById("output").innerHTML = "username: " + uname + "<p>password: "+pword+"<p>";	
 	sendLoginRequest(uname,pword);
 	return 0;
 }
 function HandleLoginResponse(response)
 {
+	alert(response);
 	var obj = JSON.parse(response);
 	if (obj["status"] == true)
 		window.location.href='datasearch.html';
@@ -79,6 +81,7 @@ function sendLoginRequest(username,password)
 	}
 	request.send("type=login&uname="+username+"&pword="+password);
 }
+
 
 function registerPage(){
 	window.location.href='register.html';

@@ -15,10 +15,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.0/js/dataTables.responsive.js"></script>
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script>
 	$(document).ready(function(){
-		$('#example').hide();
+		//$('#example').hide();
+		$('#example').DataTable();		
 	
 	$(".dropdown-menu li a").click(function(){
 			$(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
@@ -86,28 +87,28 @@
 		
 	 	//alert(obj.listings[0].id);
 				
-		var tableData = $('#example').dataTable( {
-					responsive: true,
+		//var tableData = $('#example').dataTable( {
+					//responsive: true,
 					/*"paging": true,
 					"pagingType": "full_numbers",
 					"processing": true,
 					"iDisplayLength": 10,
 					"deferRender": true,*/
-					"language": {"emptyTable":"Retrieving Data..."},
+					//"language": {"emptyTable":"Retrieving Data..."},
 					/*ajax: {
 					url: "test.txt",
 					//url: "test.txt",
 					dataSrc: 'listings.0.id'	
 					//contentType: "application/json;"
 					},*/
-					data:response,
-					Columns: [
-					    {'Data': 'id'},
-					    {'Data': 'makeName'},
-					    ]
-					}); 
-		$('#example').DataTable();
-		$('#example').show();
+					//data:response,
+					//Columns: [
+					    //{'Data': 'id'},
+					    //{'Data': 'makeName'},
+					    //]
+					//}); 
+		
+		//$('#example').show();
 	}
 	
 </script>
@@ -134,9 +135,9 @@
 								</button>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenuRadius">
 									<li><a href="#" data-value="All">All</a></li>
-									<li><a href="#" data-value="10 miles">10 miles</a></li>
-									<li><a href="#" data-value="15 miles">15 miles</a></li>
-									<li><a href="#" data-value="25 miles">25 miles</a></li>
+									<li><a href="#" data-value="10">10 miles</a></li>
+									<li><a href="#" data-value="15">15 miles</a></li>
+									<li><a href="#" data-value="25">25 miles</a></li>
 								</ul>
 							</div>
 						</div>
@@ -182,10 +183,42 @@
 			    <tr>
 				<th>id</th>
 				<th>makeName</th>
+				<th>modelName</th>
+				<th>makeYear</th>
+				<th>vehiclePrice</th>
+				<th>miles</th>
+				<th>exteriorColor</th>
 			    </tr>
 			</thead>
-			
-			
+			<tbody>
+			    <tr>
+			        <td>79660597</td>
+				<td>Honda</td>
+				<td>Civic</td>
+				<td>2012</td>
+				<td>$19,425</td>
+				<td>10</td>
+				<td>Crytsal Black</td>
+			    </tr>
+			    <tr>
+			        <td>457290719</td>
+				<td>Ford</td>
+				<td>Fiesta</td>
+				<td>2010</td>
+				<td>$15,345</td>
+				<td>34,000</td>
+				<td>Black</td>
+			    </tr>
+			    <tr>
+			        <td>072918710</td>
+				<td>Jeep</td>
+				<td>Wrangler</td>
+				<td>2007</td>
+				<td>$10,326</td>
+				<td>95,345</td>
+				<td>Blue</td>
+			    </tr>
+			</tbody>
 		    </table>
 		</div>
 	</div>
