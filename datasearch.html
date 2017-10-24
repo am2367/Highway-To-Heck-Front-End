@@ -16,6 +16,7 @@
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.0/js/dataTables.responsive.js"></script>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	
 <script>
 	$(document).ready(function(){
 		$('#example').hide();
@@ -112,34 +113,18 @@
 	
 </script>
 
-<style>
-body { padding-top: 63px; }
-</style>
-
+<!-- loads nav bar -->
+<script>
+	$(document).ready(function(){
+		$("#nav").load("navbar.html");
+	}); 
+</script>
+	
 </head>
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-<div class="container">
-  <div class="navbar-header">
-	<a class="navbar-brand" href="#">Highway to Heck</a>
-  </div>
-	<ul class="nav navbar-nav">
-		<li class="active"><a href="datasearch.html">Home</a></li>
-		<li><a href="watchlist.html">Watchlist</a></li>
-	</ul>
-	<ul class="nav navbar-nav navbar-right">
-		<li class="dropdown">
-		<a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href="#"> UserName
-			<span class="caret"></span></a>
-			<ul class="dropdown-menu">
-			<li><a href="index.html">Logout</a></li>
-			<li><a href="#">Settings</a></li>
-			</ul>
-		</li>
-    </ul>
-</div>  
-</nav>
+<!-- nav bar -->
+<nav id="nav"></nav>
   <div class="container">
 	<div class="panel panel-default">
 		<div class="panel-body">
@@ -153,7 +138,7 @@ body { padding-top: 63px; }
 							 <label for="zip">Zip:</label>
 							 <input type="text" onkeypress="return isNumber(event)" class="form-control" id="zip" placeholder="Enter zip" name="zip" maxlength="6">
 								<label for="radius">Radius:</label>
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="dropdownMenuRadius" aria-haspopup="true" 										aria-expanded="true">Choose Distance
+								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="dropdownMenuRadius" aria-haspopup="true" aria-expanded="true">Choose Distance
 								<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenuRadius">
@@ -173,7 +158,7 @@ body { padding-top: 63px; }
 						<div class="well">
 							<div class="form-group">
 								<label for="min">Min:</label>
-								<input type="text" min="0" onkeypress="return isNumber(event)" class="form-control" id="min" placeholder="Enter minimum price" 									       name="min">
+								<input type="text" min="0" onkeypress="return isNumber(event)" class="form-control" id="min" placeholder="Enter minimum price" name="min">
 								<label for="max">Max:</label>
 								<input type="text" onkeypress="return isNumber(event)" class="form-control" id="max" placeholder="Enter maximum price" name="max">
 							</div>
@@ -217,4 +202,3 @@ body { padding-top: 63px; }
 
 </body>
 </html>
-
