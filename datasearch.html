@@ -18,14 +18,24 @@
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script>
 	var watchlist = [];
+	var watchlistings = [];
 	$(document).ready(function(){
 		//$('#example').hide();
-		$('#example').DataTable();		
+		$('#example').DataTable();
+		
 	$(document).on('click', '#Add', function(){
-		watchlist.push($(this).closest('tr'));
-		localStorage.setItem("list", watchlist);
-		console.log(JSON.stringify($(this).closest('tr')));
+		$(this).closest('tr').children('td:not(:last-child)').each(function(){
+			watchlist.push($(this).text());
+		});
+		//console.log(watchlist);
+		watchlistings.push(watchlist);
+		watchlist = [];
+		console.log(watchlistings);
+		localStorage.setItem("list", JSON.stringify(watchlistings));		
+		//watchlist.push($(this).closest('tr').children('td:not(:last-child)').text());
+		//localStorage.setItem("list", watchlist);
 	});
+
 	$(".dropdown-menu li a").click(function(){
 			$(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
 			$(this).parents(".dropdown").find('.btn').val($(this).data('value'));

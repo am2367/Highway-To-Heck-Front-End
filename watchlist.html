@@ -21,12 +21,22 @@
 <script>
 $(document).ready(function(){
 		//$('#example').hide();
-		//alert((localStorage.getItem("list")));
-		$('tbody').append(localStorage.getItem("list"));
-		//$('tbody').append("<tr><td>Hello</td></tr>");
+		//alert(JSON.parse(localStorage.getItem("list")));
+		var temp = JSON.parse(localStorage.getItem("list"));
+		$(temp).each(function(){
+			console.log($(this));			
+			$('tbody').append("<tr>");
+			for (var i = 0; i < $(this).length; i++){
+				console.log($(this)[i]);
+				$('tbody tr').last().append("<td>" + $(this)[i] + "</td>");
+			};
+			$('tbody tr').last().append("<td><input type =\"button\" value=\"Remove\" id=\"remove\"></td></tr>");
+		});
+		//$('tbody').append(localStorage.getItem("list"));
 		$('#watchlist').DataTable();
 		$(document).on('click', '#remove', function(){
 			$(this).closest('tr').remove();
+			localStorage.removeItem("list");
 		});
 		
 });
@@ -63,26 +73,6 @@ $(document).ready(function(){
 			    </tr>
 			</thead>
 			<tbody>
-				<tr>
-			        <td>79660597</td>
-				<td>Honda</td>
-				<td>Civic</td>
-				<td>2012</td>
-				<td>$19,425</td>
-				<td>10</td>
-				<td>Crystal Black</td>
-				<td><input type ="button" value="Remove" id="remove"></td>
-			    </tr>
-			    <tr>
-			        <td>457290719</td>
-				<td>Ford</td>
-				<td>Fiesta</td>
-				<td>2010</td>
-				<td>$15,345</td>
-				<td>34,000</td>
-				<td>Black</td>
-				<td><input type ="button" value="Remove" id="remove"></td>
-			    </tr>
 			</tbody>
 		    </table>
 		</div>
