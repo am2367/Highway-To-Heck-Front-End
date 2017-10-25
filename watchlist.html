@@ -22,13 +22,17 @@
 $(document).ready(function(){
 		//$('#example').hide();
 		//alert((localStorage.getItem("list")));
-		//$('tbody').append(localStorage.getItem("list"));
+		$('tbody').append(localStorage.getItem("list"));
 		//$('tbody').append("<tr><td>Hello</td></tr>");
 		$('#watchlist').DataTable();
+		$(document).on('click', '#remove', function(){
+			$(this).closest('tr').remove();
+		});
+		
 });
-function removeFromList(){
-	$(this).closest('tr').remove();
-}
+/*function removeFromList(){
+	$(this).remove('tr');
+}*/
 </script>
 <style>
 body { padding-top: 63px; }
@@ -81,7 +85,7 @@ body { padding-top: 63px; }
 				<td>$19,425</td>
 				<td>10</td>
 				<td>Crystal Black</td>
-				<td><input type ="button" value="Remove" onClick="removeFromList()"></td>
+				<td><input type ="button" value="Remove" id="remove"></td>
 			    </tr>
 			    <tr>
 			        <td>457290719</td>
@@ -91,7 +95,7 @@ body { padding-top: 63px; }
 				<td>$15,345</td>
 				<td>34,000</td>
 				<td>Black</td>
-				<td><input type ="button" value="Remove" onClick="removeFromList()"></td>
+				<td><input type ="button" value="Remove" id="remove"></td>
 			    </tr>
 			</tbody>
 		    </table>

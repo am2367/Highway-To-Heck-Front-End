@@ -21,7 +21,11 @@
 	$(document).ready(function(){
 		//$('#example').hide();
 		$('#example').DataTable();		
-	
+	$(document).on('click', '#Add', function(){
+		watchlist.push($(this).closest('tr'));
+		localStorage.setItem("list", watchlist);
+		console.log(JSON.stringify($(this).closest('tr')));
+	});
 	$(".dropdown-menu li a").click(function(){
 			$(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
 			$(this).parents(".dropdown").find('.btn').val($(this).data('value'));
@@ -111,15 +115,15 @@
 		
 		//$('#example').show();
 	}
-	function addToList(){
+	/*function addToList(){
 		//console.log($(this).closest('tr')[0]);
 		//$('tbody').append($(this).siblings('tr').html())
 		//$('tbody').append($(this).siblings('tr').html);
-		//watchlist.push($(this).closest('tr'));
-		//localStorage.setItem("list", watchlist);
+		watchlist.push($(this).closest('tr'));
+		localStorage.setItem("list", watchlist);
 		//$(this).parent().parent().parent().parent().parent().remove();
 		//alert(data);
-	}
+	}*/
 	
 </script>
   
@@ -235,7 +239,7 @@ body { padding-top: 63px; }
 				<td>$19,425</td>
 				<td>10</td>
 				<td>Crystal Black</td>
-				<td><input type ="button" value="Add" onClick="addToList()"></td>
+				<td><input type ="button" value="Add" id="Add"></td>
 			    </tr>
 			    <tr>
 			        <td>457290719</td>
@@ -245,7 +249,7 @@ body { padding-top: 63px; }
 				<td>$15,345</td>
 				<td>34,000</td>
 				<td>Black</td>
-				<td><input type ="button" value="Add" onClick="addToList()"></td>
+				<td><input type ="button" value="Add" id="Add"></td>
 			    </tr>
 			    <tr>
 			        <td>072918710</td>
@@ -255,7 +259,7 @@ body { padding-top: 63px; }
 				<td>$10,326</td>
 				<td>95,345</td>
 				<td>Blue</td>
-				<td><input type ="button" value="Add" onClick="addToList()"></td>
+				<td><input type ="button" value="Add" id="Add"></td>
 			    </tr>
 			</tbody>
 		    </table>
