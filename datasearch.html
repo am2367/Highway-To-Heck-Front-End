@@ -17,6 +17,7 @@
     <script src="https://cdn.datatables.net/responsive/2.2.0/js/dataTables.responsive.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script>
+	var watchlist = [];
 	$(document).ready(function(){
 		//$('#example').hide();
 		$('#example').DataTable();		
@@ -110,14 +111,48 @@
 		
 		//$('#example').show();
 	}
+	function addToList(){
+		//console.log($(this).closest('tr')[0]);
+		//$('tbody').append($(this).siblings('tr').html())
+		//$('tbody').append($(this).siblings('tr').html);
+		//watchlist.push($(this).closest('tr'));
+		//localStorage.setItem("list", watchlist);
+		//$(this).parent().parent().parent().parent().parent().remove();
+		//alert(data);
+	}
 	
 </script>
   
+<style>
+body { padding-top: 63px; }
+</style>
+
 </head>
 <body>
 
+<nav class="navbar navbar-inverse navbar-fixed-top">
 <div class="container">
-  <h2>Highway to Heck</h2>
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#">Highway to Heck</a>
+  </div>
+    <ul class="nav navbar-nav">
+        <li class="active"><a href="datasearch.html">Home</a></li>
+        <li><a href="watchlist.html">Watchlist</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+        <a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href="#"> UserName
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+            <li><a href="index.html">Logout</a></li>
+            <li><a href="#">Settings</a></li>
+            </ul>
+        </li>
+    </ul>
+</div> 
+</nav>
+
+<div class="container">
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="row">
@@ -166,8 +201,8 @@
 								<input type="make" class="form-control" id="make" placeholder="Enter make" name="make">
 								<label for="model">Model:</label>
 								<input type="model" class="form-control" id="model" placeholder="Enter model" name="model">
-								<label for="model">Year:</label>
-								<input type="model" class="form-control" id="year" placeholder="Enter year" name="year">		
+								<label for="year">Year:</label>
+								<input type="year" class="form-control" id="year" placeholder="Enter year" name="year">		
 							</div>
 							<div class="form-group pull-right">
 								<button type="submit" class="btn btn-primary" style="background-color:#4CAF50" id="search" onClick="getValues()">Search!</button>
@@ -188,6 +223,7 @@
 				<th>vehiclePrice</th>
 				<th>miles</th>
 				<th>exteriorColor</th>
+				<th>Add to Watchlist</th>
 			    </tr>
 			</thead>
 			<tbody>
@@ -198,7 +234,8 @@
 				<td>2012</td>
 				<td>$19,425</td>
 				<td>10</td>
-				<td>Crytsal Black</td>
+				<td>Crystal Black</td>
+				<td><input type ="button" value="Add" onClick="addToList()"></td>
 			    </tr>
 			    <tr>
 			        <td>457290719</td>
@@ -208,6 +245,7 @@
 				<td>$15,345</td>
 				<td>34,000</td>
 				<td>Black</td>
+				<td><input type ="button" value="Add" onClick="addToList()"></td>
 			    </tr>
 			    <tr>
 			        <td>072918710</td>
@@ -217,6 +255,7 @@
 				<td>$10,326</td>
 				<td>95,345</td>
 				<td>Blue</td>
+				<td><input type ="button" value="Add" onClick="addToList()"></td>
 			    </tr>
 			</tbody>
 		    </table>
