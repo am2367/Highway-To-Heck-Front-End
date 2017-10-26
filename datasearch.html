@@ -24,6 +24,11 @@
 		$('#example').DataTable();
 		
 	$(document).on('click', '#Add', function(){
+		var temp = ((($(this).closest('tr').children('td:not(:last-child)'))[4]));
+		var price = (temp["innerHTML"]);
+		sendMail(price);
+		$(this).prop("value","Added!");
+		//$(this).css("background-color","green");
 		$(this).closest('tr').children('td:not(:last-child)').each(function(){
 			watchlist.push($(this).text());
 		});
@@ -64,6 +69,20 @@
     					
 		
 	});
+	function sendMail(price){
+		var request = new XMLHttpRequest();
+		request.open("POST","sendMail.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+				alert(this.responseText);		
+			}		
+		}
+		request.send("price="+price);
+	}
 	function getValues(){
 		var zip = document.getElementById("zip").value;
 		var radius = 20//document.getElementById("dropdownMenuRadius").text;
