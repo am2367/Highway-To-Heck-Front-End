@@ -11,37 +11,32 @@ if (!isset($_POST))
 }
 $postRequest = $_POST;
 $response = "unsupported request type";
-
-switch ($postRequest["type"])
+switch ($postRequest["data"])
 {
 	case "login":
-		$username = $postRequest["uname"];
-		$password = $postRequest["pword"];
-		$type = $postRequest["type"];
+		$password = $postRequest["password"];
 		$hashedPass = sha1($password);//hash the pass
-		$response = createClient($type, $username, $hashedPass);
+		$postRequest["password"] = $hashedPass;
+		$response = createClient($postRequest);
 	break;
 	case "register":
-		$username = $postRequest["uname"];
-		$password = $postRequest["pword"];
-		$type = $postRequest["type"];
+		$password = $postRequest["password"];
 		$hashedPass = sha1($password);//hash the pass
-		$response = createClient($type, $username, $hashedPass);
+		$postRequest["password"] = $hashedPass;
+		$response = createClient($postRequest);
 	break;
 	case "listings":
-		$type = $postRequest["type"];
-		$zip = $postRequest["zip"];
-		$radius = $postRequest["radius"];
-		$minPrice = $postRequest["minPrice"];
-		$maxPrice = $postRequest["maxPrice"];
-		$make = $postRequest["make"];
-		$model = $postRequest["model"];
-		$year = $postRequest["year"];
-		$response = createClientDMZ($type, $zip, $radius, $minPrice, $maxPrice, $make, $model, $year);
+		$response = createClientDMZ($postRequest);
 	break; 
+	case "addToWatchlist":
+		$response = createClient($postRequest);
+	break; 
+	case "removeFromWatchlist":
+		$response = createClient($postRequest);
+	break;
 }
 //write to log file
-writeLogs($response["message"]);
+writeLogs(json_encode($response));
 //turn the response into a JSON object
 echo json_encode($response);
 exit(0);

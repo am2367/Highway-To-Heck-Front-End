@@ -16,33 +16,60 @@
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.0/js/dataTables.responsive.js"></script>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
+    <script src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/ellipsis.js"></script>
 </head>
 <script>
 $(document).ready(function(){
-		//$('#example').hide();
-		//alert(JSON.parse(localStorage.getItem("list")));
-		var temp = JSON.parse(localStorage.getItem("list"));
-		$(temp).each(function(){
-			console.log($(this));			
-			$('tbody').append("<tr>");
-			for (var i = 0; i < $(this).length; i++){
-				console.log($(this)[i]);
-				$('tbody tr').last().append("<td>" + $(this)[i] + "</td>");
-			};
-			$('tbody tr').last().append("<td><input type =\"button\" value=\"Remove\" id=\"remove\"></td></tr>");
-		});
-		//$('tbody').append(localStorage.getItem("list"));
-		$('#watchlist').DataTable();
-		$(document).on('click', '#remove', function(){
-			$(this).closest('tr').remove();
-			localStorage.removeItem("list");
+		$('#example').DataTable({ 
+			dataSrc: "", 
+			responsive:true, 
+			"proccessing":true,
+			"ajax": {
+			    "url": "handleRequests.php",
+			    "type": "POST",
+			    "data": {"user": "admin"}
+			},
+			columns:[
+			{ "data": "title" },
+			{ "data": "company" },
+			{ "data": "location" },
+			{ "data": "type" },
+			{ "data": "description", render: $.fn.dataTable.render.ellipsis(50, true)},
+			{ "data": "created_at" },
+			{ "data": "how_to_apply" },
+			{ "data": "url", "render": function(data, type, row, meta){
+			return '<a href="' + data + '"class="btn btn-info" role="button">Link</a>'}},
+			{ "data": null, "defaultContent":"<button id=\"Remove\">Remove</button>"},
+			{ "data": "id" }],
 		});
 		
 });
-/*function removeFromList(){
-	$(this).remove('tr');
-}*/
+$(document).on('click', '#Remove', function(){
+	var id = (($(this).parents('tr'))[0]).lastChild.textContent;
+	removeFromWatchlist(id, $(this));
+});
+function removeFromWatchlist(listingID, button){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+				handleRemove(this.responseText, button);					
+			}		
+		}
+		request.send("data=addToWatchlist" + "&listingID=" + listingID);	
+}
+function handleRemove(response, button){
+		var obj = JSON.parse(response);
+		if(obj["status"] == true){
+			button.parents('tr').remove();
+		}
+		else
+			alert("There was an error removing the listing from your watchlist! Please try again.")
+};
 </script>
 <!-- loads nav bar -->
 <script>

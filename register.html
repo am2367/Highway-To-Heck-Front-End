@@ -75,7 +75,7 @@ function sendRegisterRequest(username,password)
 			HandleRegisterResponse(JSON.parse(this.responseText));
 		}		
 	}
-	request.send("type=register&uname="+username+"&pword="+password);
+	request.send("data=register&uname="+username+"&pword="+password);
 }
 function confirmPassword(){
 	var pword = document.getElementById("inputPassword").value;
