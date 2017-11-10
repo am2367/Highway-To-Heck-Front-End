@@ -22,7 +22,12 @@
 
 	$(document).ready(function(){
 		var obj;
-		$("#nav").load("navbar.html");
+		var user;
+		//get current session
+		getSession();
+		//get todays listings to send through email to user
+		getTodaysListings();
+		//create datatable
 		Table = $('#example').DataTable({
 		data:obj, dataSrc: "", responsive:true, "proccessing":true,
 		columns:[
@@ -36,35 +41,25 @@
 		{ "data": "url", "render": function(data, type, row, meta){
 		return '<a href="' + data + '"class="btn btn-info" role="button">Link</a>'}},
 		{ "data": null, "defaultContent":"<button id=\"Add\">Add!</button>"},
-		{ "data": "id" }],
+		{ "data": "id"}],
 		});
-		//$('#example').hide();
+		//get form values
 		$('#search').click(function(){
 			getValues();
 		});	
+		//update the datatable
 		function updateTable(){
-			//$('#example').show();
 			Table.clear().draw();
 			Table.rows.add(obj).draw();
 			Table.columns.adjust().draw();	
-				
 		}
+		//on add button click
 		$(document).on('click', '#Add', function(){
 			var id = (($(this).parents('tr'))[0]).lastChild.textContent;
 			addToWatchlist(id, $(this));
 		});
-		$(document).on('click', '#description', function(){
-			var description = ($(this).parents('tr'));
-			//console.log(description);			
-		});
-
-		$(".dropdown-menu li a").click(function(){
-				$(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
-				$(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-		});
-	
     					
-	
+	//add listing to watchlist
 	function addToWatchlist(listingID, button){
 		var request = new XMLHttpRequest();
 		request.open("POST","handleRequests.php",true);
@@ -77,9 +72,48 @@
 				handleAdd(this.responseText, button);					
 			}		
 		}
-		request.send("data=addToWatchlist" + "&listingID=" + listingID);	
+		request.send("data=addToWatchlist" + "&user=" + user + "&listingID=" + listingID);	
 	}
-	function sendMail(price){
+	//get listings for todays date
+	function getTodaysListings(){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+				handleTodaysListings(this.responseText);		
+			}		
+		}
+		request.send("data=getTodaysListings");
+	}
+	//handle the response from the server 
+	function handleTodaysListings(response){
+		response = JSON.parse(response);
+		//create table variable to hold listing data in html format
+		var table = "<html><body><table><thead><tr><th>Position Title</th><th>Company</th><th>Location</th>" +
+			"<th>Position Type</th><th>Description</th><th>Date Posted</th><th>How to Apply</th><th>Link</th>" +
+				"<th>Add to Watchlist</th><th>ID</th></tr></thead><tbody>";
+		$.each(response, function () {
+    		var eachrow = "<tr>" + "<td>" + response["created_at"] + "</td>"
+		         + "<td>" + response["title"] + "</td>"
+		         + "<td>" + response["location"] + "</td>"
+		         + "<td>" + response["type"] + "</td>"
+			 + "<td>" + response["description"] + "</td>"
+			 + "<td>" + response["how_to_apply"] + "</td>"
+			 + "<td>" + response["company"] + "</td>"
+			 + "<td>" + response["url"] + "</td>"
+		         + "</tr>";
+		table += eachrow;
+		});
+		table += "</tbody></table></body></html>";
+		//send email
+		sendMail(table);
+	}
+	//send todays listings to user
+	function sendMail(table){
 		var request = new XMLHttpRequest();
 		request.open("POST","sendMail.php",true);
 		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -88,24 +122,22 @@
 		
 			if ((this.readyState == 4)&&(this.status == 200))
 			{
-				return(this.responseText);		
+
 			}		
 		}
-		request.send("price="+price);
+		request.send("data=" + table);
 	}
+	//get form values
 	function getValues(){
-		/*var zip = document.getElementById("zip").value;
-		var radius = 20//document.getElementById("dropdownMenuRadius").text;
-		var minPrice = document.getElementById("min").value;
-		var maxPrice = document.getElementById("max").value;
-		var make = document.getElementById("make").value;
-		var model = document.getElementById("model").value;
-		var year = document.getElementById("year").value;*/
-		var description = "java"; 
-		var location = "NY";
-		var full_time = false;
+		var description = document.getElementById("description").value; 
+		var location = document.getElementById("location").value;
+		var radioBtnValue = document.getElementsByName("optradio").value;
+		var full_time = "";
+		if(radioBtnValue = "Full-Time")
+			var full_time = true;
 		sendData(description, location, full_time);
 	}
+	//send the args to the server
 	function sendData(description, location, full_time){
 		var request = new XMLHttpRequest();
 		request.open("POST","handleRequests.php",true);
@@ -123,20 +155,14 @@
 		}
 		request.send("data=listings" + "&description=" + description + "&location=" + location + "&full_time=" + full_time);
 	}
-	function isNumber(evt) {
-		evt = (evt) ? evt : window.event;
-		var charCode = (evt.which) ? evt.which : evt.keyCode;
-		if ( (charCode > 31 && charCode < 48) || charCode > 57) {
-		    return false;
-        	}
-        	return true;
-    	}
+	//handle server response
 	function HandleDataResponse(response)
 	{
 		//obj = response;
 		obj = JSON.parse(JSON.parse(response));
 		updateTable();	 	
 	}
+	//handle the server respponse
 	function handleAdd(response, button){
 		var obj = JSON.parse(response);
 		if(obj["status"] == true){
@@ -146,6 +172,32 @@
 		else
 			alert("There was an error adding the listing to your watchlist! Please try again.")
 	};
+	//get current session
+	function getSession(){
+	var request = new XMLHttpRequest();
+	request.open("POST","sessions.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function()
+	{
+		
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+			handleSessionReply(this.responseText);				
+		}		
+	}
+	request.send("request=get");
+	}
+	//handle the session reply
+	function handleSessionReply(response){
+		if(response != ""){
+			$('.dropdown-toggle').text(response);
+			user = response;
+		}
+		else{
+			alert("Your session has expired. Please login again.");
+			window.location.href='index.html';
+		}	
+	}
 	});
 </script>
 
@@ -153,60 +205,44 @@
 <body>
 
 <!-- nav bar -->
-<nav id="nav"></nav>
-
+<nav class="navbar navbar-inverse navbar-fixed-top" id="nav">
 <div class="container">
+  <div class="navbar-header">
+	<a class="navbar-brand" href="#">Highway to Heck</a>
+  </div>
+	<ul class="nav navbar-nav">
+		<li class="active"><a href="datasearch.html">Home</a></li>
+		<li><a href="watchlist.html">Watchlist</a></li>
+		<li><a href="graphs.html">Graph</a></li>
+	</ul>
+	<ul class="nav navbar-nav navbar-right">
+		<li class="dropdown">
+		<a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href="#"> UserName
+			<span class="dropdown-caret"></span></a>
+			<ul class="dropdown-menu">
+			<li><a href="index.html">Logout</a></li>
+			<li><a href="#">Settings</a></li>
+			</ul>
+		</li>
+    </ul>
+</div>  
+</nav>
+
+<div class="container" style="width:80%">
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-lg-6">
-				  	<p>Location</p>
-					<form class="form-inline">
-					    <div class="well">
-						<div class="form-group">
-							<div class="dropdown">
-							 <label for="zip">Zip:</label>
-							 <input type="text" onkeypress="return isNumber(event)" class="form-control" id="zip" placeholder="Enter zip" name="zip" maxlength="6">
-								<label for="radius">Radius:</label>
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="dropdownMenuRadius" aria-haspopup="true" 										aria-expanded="true">Choose Distance
-								<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" aria-labelledby="dropdownMenuRadius">
-									<li><a href="#" data-value="All">All</a></li>
-									<li><a href="#" data-value="10">10 miles</a></li>
-									<li><a href="#" data-value="15">15 miles</a></li>
-									<li><a href="#" data-value="25">25 miles</a></li>
-								</ul>
-							</div>
-						</div>
-					  </div>
-					</form>
-				</div>
-				<div class="col-lg-6">
-				  	<p>Price</p>
-					<form class="form-inline">
-						<div class="well">
-							<div class="form-group">
-								<label for="min">Min:</label>
-								<input type="text" min="0" onkeypress="return isNumber(event)" class="form-control" id="min" placeholder="Enter minimum price" 									       name="min">
-								<label for="max">Max:</label>
-								<input type="text" onkeypress="return isNumber(event)" class="form-control" id="max" placeholder="Enter maximum price" name="max">
-							</div>
-					  	</div>
-					</form>
-				</div>
 				<div class="col-lg-10">
 				  	<p>Vehicle Type</p>
 					<form class="form-inline">
 						<div class="well">
-							<!--<div class="form-group">
-								<label for="make">Make:</label>
-								<input type="make" class="form-control" id="make" placeholder="Enter make" name="make">
-								<label for="model">Model:</label>
-								<input type="model" class="form-control" id="model" placeholder="Enter model" name="model">
-								<label for="year">Year:</label>
-								<input type="year" class="form-control" id="year" placeholder="Enter year" name="year">		
-							</div>-->
+							<div class="form-group">
+								<label for="description">Description:</label>
+								<input type="text" class="form-control" id="description" placeholder="Filter by: Title, Company, Description, ID, etc..">
+								<label for="location">Location:</label>
+								<input type="text" class="form-control" id="location" placeholder="Filter by: City, State, Zip, or Country">	
+								<label class="radio-inline"><input type="radio" name="optradio">Full Time Only</label>
+							</div>
 							<div class="form-group pull-right">
 								<button type="button" class="btn btn-primary" style="background-color:#4CAF50" id="search">Search!</button>
 							</div>
@@ -228,7 +264,7 @@
 				<th>How to Apply</th>
 				<th>Link</th>
 				<th>Add to Watchlist</th>
-				<th>id</th>
+				<th>ID</th>
 			    </tr>
 			</thead>
 		    </table>

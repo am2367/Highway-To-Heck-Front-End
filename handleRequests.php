@@ -1,7 +1,7 @@
 <?php
 include("../../../home/alex/git/it490f17/testRabbitMQClient.php");
 include("writeLogs.php");
-
+//if post message is not set
 if (!isset($_POST))
 {
 	$msg = "NO POST MESSAGE SET";
@@ -10,7 +10,7 @@ if (!isset($_POST))
 	exit(0);
 }
 $postRequest = $_POST;
-$response = "unsupported request type";
+$response = "unsupported request type"; //default response
 switch ($postRequest["data"])
 {
 	case "login":
@@ -21,8 +21,11 @@ switch ($postRequest["data"])
 	break;
 	case "register":
 		$password = $postRequest["password"];
+		$email = $postRequest["email"];
 		$hashedPass = sha1($password);//hash the pass
+		$hashedEmail = sha1($email);//hash the email
 		$postRequest["password"] = $hashedPass;
+		$postRequest["email"] = $hashedEmail;
 		$response = createClient($postRequest);
 	break;
 	case "listings":
@@ -33,6 +36,18 @@ switch ($postRequest["data"])
 	break; 
 	case "removeFromWatchlist":
 		$response = createClient($postRequest);
+	break;
+	case "getListingsFromWatchlist":
+		$response = createClient($postRequest);
+	break;
+	case "watchlist":
+		$response = createClient($postRequest);
+	break;
+	case "graphData":
+		$response = createClientDMZ($postRequest);
+	break;
+	case "getTodaysListings":
+		$response = createClientDMZ($postRequest);
 	break;
 }
 //write to log file

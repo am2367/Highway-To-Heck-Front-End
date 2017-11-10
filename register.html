@@ -26,25 +26,23 @@
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
 	<label for="confirmPassword" class="sr-only">Confirm Password</label>
-        <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required>
+	<input type="password" id="inputPassword" class="form-control" placeholder="Confirm Password" required>
+	<label for="email" class="sr-only">email</label>
+        <input type="email" id="email" class="form-control" placeholder="email" required>
         <button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitCredentials()">Submit</button>
       </form>
 
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    </div>
     <script src="js/ie10-viewport-bug-workaround.js"></script>
 	<script>
+//Get username, password, and email fields
 function submitCredentials()
 {
 	var uname = document.getElementById("inputName").value;
 	var pword = document.getElementById("inputPassword").value;
+	var email = document.getElementById("email").value;	
 	if (confirmPassword() == true){	
-		sendRegisterRequest(uname,pword);
+		sendRegisterRequest(uname,pword, email);
 		return 0;
 	}
 	else if (confirmPassword() == false){
@@ -52,6 +50,7 @@ function submitCredentials()
 		document.getElementById("form").reset();
 	}
 }
+//handle registration attempt server response
 function HandleRegisterResponse(response)
 {
 	
@@ -61,8 +60,8 @@ function HandleRegisterResponse(response)
 		alert("Registration failed! Please try again.");
 	//document.getElementById("output").innerHTML = "response: "+text+"<p>";
 }
-
-function sendRegisterRequest(username,password)
+//attempt to register the user
+function sendRegisterRequest(username,password, email)
 {
 	var request = new XMLHttpRequest();
 	request.open("POST","handleRequests.php",true);
@@ -75,8 +74,9 @@ function sendRegisterRequest(username,password)
 			HandleRegisterResponse(JSON.parse(this.responseText));
 		}		
 	}
-	request.send("data=register&uname="+username+"&pword="+password);
+	request.send("data=register&username="+username+"&password="+password+"&email=" + email);
 }
+//check password fields against each other
 function confirmPassword(){
 	var pword = document.getElementById("inputPassword").value;
 	var confirmpword = document.getElementById("confirmPassword").value;

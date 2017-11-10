@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.0/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
     
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
@@ -19,35 +20,37 @@
     <script src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/ellipsis.js"></script>
 </head>
 <script>
-$(document).ready(function(){
-		$('#example').DataTable({ 
-			dataSrc: "", 
-			responsive:true, 
-			"proccessing":true,
-			"ajax": {
-			    "url": "handleRequests.php",
-			    "type": "POST",
-			    "data": {"user": "admin"}
-			},
-			columns:[
-			{ "data": "title" },
-			{ "data": "company" },
-			{ "data": "location" },
-			{ "data": "type" },
-			{ "data": "description", render: $.fn.dataTable.render.ellipsis(50, true)},
-			{ "data": "created_at" },
-			{ "data": "how_to_apply" },
-			{ "data": "url", "render": function(data, type, row, meta){
-			return '<a href="' + data + '"class="btn btn-info" role="button">Link</a>'}},
-			{ "data": null, "defaultContent":"<button id=\"Remove\">Remove</button>"},
-			{ "data": "id" }],
+
+$(document).ready(function(){		
+		var obj;
+		var user;
+		//get the current session
+		getSession();
+		//create the datatable
+		Table = $('#watchlist').DataTable({
+		data:obj, dataSrc: "", responsive:true, "proccessing":true,
+		columns:[
+		{ "data": "title" },
+		{ "data": "company" },
+	        { "data": "location" },
+		{ "data": "type" },
+		{ "data": "description", render: $.fn.dataTable.render.ellipsis(50, true)},
+		{ "data": "created_at" },
+		{ "data": "how_to_apply" },
+		{ "data": "url", "render": function(data, type, row, meta){
+		return '<a href="' + data + '"class="btn btn-info" role="button">Link</a>'}},
+		{ "data": null, "defaultContent":"<button id=\"Remove\">Remove!</button>"},
+		{ "data": "id"}],
 		});
 		
-});
-$(document).on('click', '#Remove', function(){
-	var id = (($(this).parents('tr'))[0]).lastChild.textContent;
-	removeFromWatchlist(id, $(this));
-});
+		//update the table with new data
+		function updateTable(){
+			//$('#example').show();
+			Table.clear().draw();
+			Table.rows.add(obj).draw();
+			Table.columns.adjust().draw();		
+		}
+//remove the listing from the watchlist 
 function removeFromWatchlist(listingID, button){
 		var request = new XMLHttpRequest();
 		request.open("POST","handleRequests.php",true);
@@ -60,8 +63,9 @@ function removeFromWatchlist(listingID, button){
 				handleRemove(this.responseText, button);					
 			}		
 		}
-		request.send("data=addToWatchlist" + "&listingID=" + listingID);	
+		request.send("data=removeFromWatchlist" + "&user=" + user + "&listingID=" + listingID);	
 }
+//handle the remove response from the server
 function handleRemove(response, button){
 		var obj = JSON.parse(response);
 		if(obj["status"] == true){
@@ -69,19 +73,117 @@ function handleRemove(response, button){
 		}
 		else
 			alert("There was an error removing the listing from your watchlist! Please try again.")
-};
-</script>
-<!-- loads nav bar -->
-<script>
-	$(document).ready(function(){
-		$("#nav").load("navbar.html");
-	}); 
+}
+//get the current session
+function getSession(){
+	var request = new XMLHttpRequest();
+	request.open("POST","sessions.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function()
+	{
+		
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+			handleSessionReply(this.responseText);				
+		}		
+	}
+	request.send("request=get");
+}
+//handle the session reply from the server
+function handleSessionReply(response){
+		if(response != ""){
+			$('.dropdown-toggle').text(response);
+			user = response;
+			getListingIDs(user);
+		}
+		else{
+			alert("Your session has expired. Please login again.");
+			window.location.href='index.html';
+		}	
+}
+//get the list of listing IDs for the user form the DB
+function getListingIDs(user){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+				handleListingIDsResponse(JSON.stringify((JSON.parse(this.responseText)).status));		
+				
+			}		
+		}
+		request.send("data=getListingsFromWatchlist" + "&user=" + user);
+}
+//handle the listing ID response from the server
+function handleListingIDsResponse(response)
+{
+	if (response == true){
+		getListings(response);
+	}
+	else
+		alert("Watchlist is empty!");
+}
+//get the listings for the IDs from the API
+function getListings(IDs){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+				handleListingResponse(this.responseText);	
+			}		
+		}
+		request.send("data=watchlist" + "&description=" + IDs);
+	}
+//handle the response form the server
+function handleListingResponse(response)
+	{
+		//obj = response;
+		obj = JSON.parse(response);
+		obj = JSON.parse(obj);
+		updateTable();	 	
+	}
+//execute remove function on remove click
+$(document).on('click', '#Remove', function(){
+		var id = (($(this).parents('tr'))[0]).lastChild.textContent;
+		removeFromWatchlist(id, $(this));
+});
+		
+});
+
 </script>
 
 <body>
 
 <!-- nav bar -->
-<nav id="nav"></nav>
+<nav class="navbar navbar-inverse navbar-fixed-top" id="nav">
+<div class="container">
+  <div class="navbar-header">
+	<a class="navbar-brand" href="#">Highway to Heck</a>
+  </div>
+	<ul class="nav navbar-nav">
+		<li><a href="datasearch.html">Home</a></li>
+		<li class="active"><a href="watchlist.html">Watchlist</a></li>
+		<li><a href="graphs.html">Graph</a></li>
+	</ul>
+	<ul class="nav navbar-nav navbar-right">
+		<li class="dropdown">
+		<a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href="#"> UserName
+			<span class="dropdown-caret"></span></a>
+			<ul class="dropdown-menu">
+			<li><a href="index.html">Logout</a></li>
+			<li><a href="#">Settings</a></li>
+			</ul>
+		</li>
+    </ul>
+</div>  
+</nav>
 
 <div class="container">
 	<div class="panel panel-default">
@@ -89,14 +191,16 @@ function handleRemove(response, button){
 		 <table id="watchlist" class="table table-striped table-bordered" width="100%" cellspacing="0">
 			<thead>
 			    <tr>
-				<th>id</th>
-				<th>makeName</th>
-				<th>modelName</th>
-				<th>makeYear</th>
-				<th>vehiclePrice</th>
-				<th>miles</th>
-				<th>exteriorColor</th>
+				<th>Position Title</th>
+				<th>Company</th>
+				<th>Location</th>
+				<th>Position Type</th>
+				<th>Description</th>
+				<th>Date Posted</th>
+				<th>How to Apply</th>
+				<th>Link</th>
 				<th>Remove from Watchlist</th>
+				<th>id</th>
 			    </tr>
 			</thead>
 			<tbody>
