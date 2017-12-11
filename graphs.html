@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Highway to Heck</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- required files -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.0/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.0/js/dataTables.responsive.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<style>
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+	<script>
+	$(document).ready(function(){
+		var chart = new CanvasJS.Chart("chartContainer", {
+			animationEnabled: true,
+	
+			title:{
+				text:"Number of Listings by Language"
+			},
+			axisX:{
+				interval: 1
+			},
+			axisY2:{
+				interlacedColor: "rgba(1,77,101,.2)",
+				gridColor: "rgba(1,77,101,.1)",
+				title: "Listings"
+			},
+			data: [{
+				type: "bar",
+				name: "companies",
+				axisYType: "secondary",
+				color: "#014D65",
+				dataPoints: [{
+					dataPoints : [],
+				}]
+			}]
+		});
+		var dataPoints = [];
+		getSession();
+		getGraphData();
+		function getSession(){
+			var request = new XMLHttpRequest();
+			request.open("POST","sessions.php",true);
+			request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			request.onreadystatechange= function()
+			{
+		
+				if ((this.readyState == 4)&&(this.status == 200))
+				{
+					handleSessionReply(JSON.parse(this.responseText));				
+				}		
+			}
+			request.send("request=get");
+			}
+
+		function handleSessionReply(response){
+			if(response != ""){
+				user = response[0];
+				email = response[1];
+				$('.dropdown-toggle').text(user);
+			}
+			else{
+				alert("Your session has expired. Please login again.");
+				window.location.href='index.html';
+			}	
+		}
+		function getGraphData(){
+			var request = new XMLHttpRequest();
+			request.open("POST","handleRequests.php",true);
+			request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			request.onreadystatechange= function()
+			{
+		
+				if ((this.readyState == 4)&&(this.status == 200))
+				{
+					handleGraphDataResponse(JSON.parse(JSON.parse(this.responseText)));	
+				}		
+			}
+			request.send("data=graphData");
+		}
+		function handleGraphDataResponse(response){
+			$.each(response, function(key, value){
+        			dataPoints.push({y: value, label: key});
+    			});
+			chart.options.data[0].dataPoints= dataPoints;
+			document.getElementById("loader").style.display = "none";
+			document.getElementById("loading").style.display = "none";
+			chart.render();
+		}
+
+	}); 
+	</script>
+</head>
+<body>
+
+<!-- nav bar -->
+<nav class="navbar navbar-inverse navbar-fixed-top" id="nav">
+<div class="container">
+  <div class="navbar-header">
+	<a class="navbar-brand" href="#">Highway to Heck</a>
+  </div>
+	<ul class="nav navbar-nav">
+		<li><a href="datasearch.html">Home</a></li>
+		<li><a href="recommended.html">Recommended</a></li>
+		<li><a href="watchlist.html">Watchlist</a></li>
+		<li class="active"><a href="graphs.html">Graph</a></li>
+	</ul>
+	<ul class="nav navbar-nav navbar-right">
+		<li class="dropdown">
+		<a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href="#"> UserName
+			<span class="dropdown-caret"></span></a>
+			<ul class="dropdown-menu">
+			<li><a href="index.html">Logout</a></li>
+			<li><a href="myprofile.html">Settings</a></li>
+			</ul>
+		</li>
+    </ul>
+</div>  
+</nav>
+
+<!-- graph -->
+<div class="container" style="width:80%">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h1 id="loading" style="text-align: center; margin-top: 50px;">Loading data...</h1>
+			<div id="loader"></div>
+			<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

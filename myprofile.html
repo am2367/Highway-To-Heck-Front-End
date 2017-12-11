@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Highway to Heck</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- required files -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.0/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.0/js/dataTables.responsive.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> 
+    <script src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/ellipsis.js"></script>
+<script>
+
+	$(document).ready(function(){
+		var obj;
+		var user;
+		//get current session
+		getSession();
+		$(document).on('click', '.btn-add', function(e)
+	    	{
+			e.preventDefault();
+			
+			addSkill($(this).parents('.entry:first').find('input').val())
+			var controlForm = $('.controls form:first'),
+			    currentEntry = $(this).parents('.entry:first'),
+			    newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+			newEntry.find('input').val('');	
+			controlForm.find('.entry:not(:last) .btn-add')
+			    .removeClass('btn-add').addClass('btn-remove')
+			    .removeClass('btn-success').addClass('btn-danger')
+			     
+			    .html('<span class="glyphicon glyphicon-minus"></span>');
+			controlForm.find('.entry:not(:last) input').prop("disabled", true);
+		 }).on('click', '.btn-remove', function(e){
+			removeSkill($(this).parents('.entry:first').find('input').val());
+			$(this).parents('.entry:first').remove();
+
+			e.preventDefault();
+			return false;
+		});
+		
+	//get current session
+	function getSession(){
+	var request = new XMLHttpRequest();
+	request.open("POST","sessions.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function()
+	{
+		
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+			handleSessionReply(JSON.parse(this.responseText));			
+		}		
+	}
+	request.send("request=get");
+	}
+	//handle the session reply
+	function handleSessionReply(response){
+		if(response != ""){
+			user = response[0];
+			email = response[1];
+			$('.dropdown-toggle').text(user);
+		}
+		else{
+			alert("Your session has expired. Please login again.");
+			window.location.href='index.html';
+		}	
+	}
+	function addSkill(skill){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+				
+				
+			}		
+		}
+		request.send("data=addSkill" + "&user=" + user + "&skill=" + skill);
+	}
+	function removeSkill(skill){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+					
+				
+			}		
+		}
+		request.send("data=removeSkill" + "&user=" + user + "&skill=" + skill);
+	}
+	function getSkills(){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+					
+				handleSkillsList(this.responseText);
+			}		
+		}
+		request.send("data=getSkills" + "&user=" + user);
+	}
+	function handleSkillsList(response){
+		
+		obj = JSON.parse(response);
+		
+		var skills = obj['status'];
+		$.each(skills, function(data){
+			var controlForm = $('.controls form:first');
+			currentEntry = $(document).find('.entry:last');
+			newEntry = $(currentEntry.clone()).appendTo(controlForm);
+			$(document).find('.entry:nth-last-child(2)').find('input').val(this[0]);
+			newEntry.find('input').val('');	
+			controlForm.find('.entry:not(:last) .btn-add')
+			    .removeClass('btn-add').addClass('btn-remove')
+			    .removeClass('btn-success').addClass('btn-danger')
+			.html('<span class="glyphicon glyphicon-minus"></span>');
+			controlForm.find('.entry:not(:last) input').prop("disabled", true);
+		});
+	}
+	});
+</script>
+
+</head>
+<body>
+
+<!-- nav bar -->
+<nav class="navbar navbar-inverse navbar-fixed-top" id="nav">
+<div class="container">
+  <div class="navbar-header">
+	<a class="navbar-brand" href="#">Highway to Heck</a>
+  </div>
+	<ul class="nav navbar-nav">
+		<li><a href="datasearch.html">Home</a></li>
+		<li><a href="recommended.html">Recommended</a></li>
+		<li><a href="watchlist.html">Watchlist</a></li>
+		<li><a href="graphs.html">Graph</a></li>
+	</ul>
+	<ul class="nav navbar-nav navbar-right">
+		<li class="dropdown">
+		<a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href="#"> UserName
+			<span class="dropdown-caret"></span></a>
+			<ul class="dropdown-menu">
+			<li><a href="index.html">Logout</a></li>
+			<li><a href="myprofile.html">Profile</a></li>
+			</ul>
+		</li>
+    </ul>
+</div>  
+</nav>
+
+<div class="container" style="width:80%">
+	<div class="panel panel-default" style="margin-top: 50px;">
+		<div class="panel-body">
+			<div class="row">
+				<div class="well">
+				<div class="control-group" id="fields">
+				    <label class="control-label" for="field1">My Skills</label>
+				    <div class="controls"> 
+					<form role="form" autocomplete="off">
+					    <div class="entry input-group col-xs-3">
+						<input class="form-control" name="fields[]" type="text" placeholder="Type something" />
+					    	<span class="input-group-btn">
+						    <button class="btn btn-success btn-add" type="button">
+						        <span class="glyphicon glyphicon-plus"></span>
+						    </button>
+						</span>
+					    </div>
+					</form>
+				    <br>
+				    <small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another skill, language, or technology!</small>
+				    </div>
+				</div>
+				</div>
+			</div>
+						
+		</div>
+	</div>
+</div>
+</body>
+</html>
+

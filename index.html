@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <h1 align="center">Highway to Heck</h1>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  </head>
+  <body>
+    <div class="container">
+
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputName" class="sr-only">Username</label>
+        <input type="username" id="inputName" class="form-control" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitLogin()">Sign in</button>
+	<button class="btn btn-lg btn-primary btn-block" type="button" onclick="registerPage()">Register</button>
+      </form> 
+    </div> 
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+	<script>
+
+//Stop all currently running sessions
+$(document).ready(function(){
+	stopSessions();
+});
+//submit login information
+function submitLogin()
+{
+	//grab username and password field values
+	var uname = document.getElementById("inputName").value;
+	var pword = document.getElementById("inputPassword").value;	
+	sendLoginRequest(uname,pword);
+	return 0;
+}
+//send the login request over POST to the request handler
+function sendLoginRequest(username,password)
+{
+	var request = new XMLHttpRequest();
+	request.open("POST","handleRequests.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function()
+	{
+		
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+			//send the response to the handler
+			HandleLoginResponse(this.responseText);	
+			
+		}		
+	}
+	request.send("data=login&username="+username+"&password="+password);
+}
+function HandleLoginResponse(response)
+{
+	var obj = JSON.parse(response);
+	if (obj["status"] == true){
+		getUserEmail(document.getElementById("inputName").value);
+	}
+	else
+		alert("incorrect username or password");
+}
+
+function registerPage(){
+	window.location.href='register.html';
+}
+function getUserEmail(username){
+	var request = new XMLHttpRequest();
+	request.open("POST","handleRequests.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function()
+	{
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+		 	HandleEmailResponse(this.responseText);			
+		}		
+	}
+	request.send("data=getUserEmail&username=" + username);
+}
+function HandleEmailResponse(response)
+{
+	var obj = JSON.parse(response);
+	email = obj['status']['email'];
+	setSession(document.getElementById("inputName").value);	
+}
+
+//starts the session for the passed user
+function setSession(user){
+	var request = new XMLHttpRequest();
+	request.open("POST","sessions.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function()
+	{
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+			handleSessionResponse(this.responseText);				
+		}		
+	}
+	request.send("request=set" + "&user=" + user + "&email=" + email);
+}
+//stops the session for the current user
+function stopSessions(){
+	var request = new XMLHttpRequest();
+	request.open("POST","sessions.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function()
+	{
+		
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+			
+							
+		}		
+	}
+	request.send("request=stop");
+}
+//handles the session reply
+function handleSessionResponse(response){
+		if(response == true){
+			
+			window.location.href='datasearch.html';
+		}
+		else{
+			alert("Could not start session. Please login again.");
+		}	
+	}
+
+</script>
+  </body>
+</html>

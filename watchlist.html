@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Highway to Heck</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- required files -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.0/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.0/js/dataTables.responsive.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/ellipsis.js"></script>
+</head>
+<script>
+
+$(document).ready(function(){		
+		var obj;
+		var user;
+		//get the current session
+		getSession();
+		//create the datatable
+		Table = $('#watchlist').DataTable({
+		data:obj, dataSrc: "", responsive:true, "proccessing":true,
+		columns:[
+		{ "data": "title" },
+		{ "data": "company" },
+	        { "data": "location" },
+		{ "data": "type" },
+		{ "data": "description", render: $.fn.dataTable.render.ellipsis(50, true)},
+		{ "data": "created_at" },
+		{ "data": "how_to_apply" },
+		{ "data": "url", "render": function(data, type, row, meta){
+		return '<a href="' + data + '"class="btn btn-info" role="button">Link</a>'}},
+		{ "data": null, "defaultContent":"<button type=\"button\" class=\"btn btn-primary\" id=\"Remove\">Remove!</button>"},
+		{ "data": "id"}],
+		});
+		
+		//update the table with new data
+		function updateTable(){
+			//$('#example').show();
+			Table.clear().draw();
+			Table.rows.add(obj).draw();
+			Table.columns.adjust().draw();		
+		}
+//remove the listing from the watchlist 
+function removeFromWatchlist(listingID, button){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+				handleRemove(this.responseText, button);					
+			}		
+		}
+		request.send("data=removeFromWatchlist" + "&user=" + user + "&listingID=" + listingID);	
+}
+//handle the remove response from the server
+function handleRemove(response, button){
+		var obj = JSON.parse(response);
+		if(obj["status"] == true){
+			button.parents('tr').remove();
+		}
+		else
+			alert("There was an error removing the listing from your watchlist! Please try again.")
+}
+//get the current session
+function getSession(){
+	var request = new XMLHttpRequest();
+	request.open("POST","sessions.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function()
+	{
+		
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+			handleSessionReply(JSON.parse(this.responseText));				
+		}		
+	}
+	request.send("request=get");
+}
+//handle the session reply from the server
+function handleSessionReply(response){
+		if(response != ""){
+			user = response[0];
+			email = response[1];
+			$('.dropdown-toggle').text(user);
+			getListingIDs(user);
+		}
+		else{
+			alert("Your session has expired. Please login again.");
+			window.location.href='index.html';
+		}	
+}
+//get the list of listing IDs for the user form the DB
+function getListingIDs(user){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+				handleListingIDsResponse(JSON.stringify((JSON.parse(this.responseText)).status));		
+				
+			}		
+		}
+		request.send("data=getListingsFromWatchlist" + "&user=" + user);
+}
+//handle the listing ID response from the server
+function handleListingIDsResponse(response)
+{
+	if (response){
+		getListings(response);
+	}
+	else{
+		alert("Watchlist is empty!");
+	}
+}
+//get the listings for the IDs from the API
+function getListings(IDs){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+				handleListingResponse(this.responseText);	
+			}		
+		}
+		request.send("data=watchlist" + "&description=" + IDs);
+	}
+//handle the response form the server
+function handleListingResponse(response)
+	{
+		//obj = response;
+		obj = JSON.parse(response);
+		obj = JSON.parse(obj);
+		updateTable();	 	
+	}
+//execute remove function on remove click
+$(document).on('click', '#Remove', function(){
+		var id = (($(this).parents('tr'))[0]).lastChild.textContent;
+		removeFromWatchlist(id, $(this));
+});
+		
+});
+
+</script>
+
+<body>
+
+<!-- nav bar -->
+<nav class="navbar navbar-inverse navbar-fixed-top" id="nav">
+<div class="container"  style="width:90%">
+  <div class="navbar-header">
+	<a class="navbar-brand" href="#">Highway to Heck</a>
+  </div>
+	<ul class="nav navbar-nav">
+		<li><a href="datasearch.html">Home</a></li>
+		<li><a href="recommended.html">Recommended</a></li>
+		<li class="active"><a href="watchlist.html">Watchlist</a></li>
+		<li><a href="graphs.html">Graph</a></li>
+	</ul>
+	<ul class="nav navbar-nav navbar-right">
+		<li class="dropdown">
+		<a class="dropdown-toggle glyphicon glyphicon-user" data-toggle="dropdown" href="#"> UserName
+			<span class="dropdown-caret"></span></a>
+			<ul class="dropdown-menu">
+			<li><a href="index.html">Logout</a></li>
+			<li><a href="myprofile.html">Profile</a></li>
+			</ul>
+		</li>
+    </ul>
+</div>  
+</nav>
+
+<div class="container" style="width=90%">
+	<div class="panel panel-default">
+		<div class="panel panel-body">
+		 <table id="watchlist" class="table table-striped table-bordered" width="100%" cellspacing="0">
+			<thead>
+			    <tr>
+				<th>Position Title</th>
+				<th>Company</th>
+				<th>Location</th>
+				<th>Position Type</th>
+				<th>Description</th>
+				<th>Date Posted</th>
+				<th>How to Apply</th>
+				<th>Link</th>
+				<th>Remove from Watchlist</th>
+				<th>id</th>
+			    </tr>
+			</thead>
+			<tbody>
+			</tbody>
+		    </table>
+		</div>
+	</div>
+</div>
+</body>
+</html>
