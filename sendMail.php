@@ -1,7 +1,8 @@
 <?php
 
 $table = $_POST["data"];
-$to = "alex.markenzon@yahoo.com";
+$to = $_POST['email'];
+//$to = "alex.markenzon@yahoo.com";
 $subject = "Test Message";
 $headers  = 'MIME-Version: 1.0' . "\r\n";
 $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
