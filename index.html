@@ -34,8 +34,7 @@
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitLogin()">Sign in</button>
 	<button class="btn btn-lg btn-primary btn-block" type="button" onclick="registerPage()">Register</button>
-      </form>
-     
+      </form> 
     </div> 
     <script src="js/ie10-viewport-bug-workaround.js"></script>
 	<script>
@@ -65,7 +64,8 @@ function sendLoginRequest(username,password)
 		if ((this.readyState == 4)&&(this.status == 200))
 		{
 			//send the response to the handler
-			HandleLoginResponse(this.responseText);				
+			HandleLoginResponse(this.responseText);	
+			
 		}		
 	}
 	request.send("data=login&username="+username+"&password="+password);
@@ -74,7 +74,7 @@ function HandleLoginResponse(response)
 {
 	var obj = JSON.parse(response);
 	if (obj["status"] == true){
-		setSession(document.getElementById("inputName").value)
+		getUserEmail(document.getElementById("inputName").value);
 	}
 	else
 		alert("incorrect username or password");
@@ -83,6 +83,26 @@ function HandleLoginResponse(response)
 function registerPage(){
 	window.location.href='register.html';
 }
+function getUserEmail(username){
+	var request = new XMLHttpRequest();
+	request.open("POST","handleRequests.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function()
+	{
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+		 	HandleEmailResponse(this.responseText);			
+		}		
+	}
+	request.send("data=getUserEmail&username=" + username);
+}
+function HandleEmailResponse(response)
+{
+	var obj = JSON.parse(response);
+	email = obj['status']['email'];
+	setSession(document.getElementById("inputName").value);	
+}
+
 //starts the session for the passed user
 function setSession(user){
 	var request = new XMLHttpRequest();
@@ -95,7 +115,7 @@ function setSession(user){
 			handleSessionResponse(this.responseText);				
 		}		
 	}
-	request.send("request=set" + "&user=" + user);
+	request.send("request=set" + "&user=" + user + "&email=" + email);
 }
 //stops the session for the current user
 function stopSessions(){
@@ -116,6 +136,7 @@ function stopSessions(){
 //handles the session reply
 function handleSessionResponse(response){
 		if(response == true){
+			
 			window.location.href='datasearch.html';
 		}
 		else{

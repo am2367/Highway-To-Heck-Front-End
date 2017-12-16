@@ -23,10 +23,11 @@
 	$(document).ready(function(){
 		var obj;
 		var user;
+		var email;
 		//get current session
 		getSession();
 		//get todays listings to send through email to user
-		getTodaysListings();
+		//getTodaysListings();
 		//create datatable
 		Table = $('#example').DataTable({
 		data:obj, dataSrc: "", responsive:true, "proccessing":true,
@@ -40,7 +41,7 @@
 		{ "data": "how_to_apply" },
 		{ "data": "url", "render": function(data, type, row, meta){
 		return '<a href="' + data + '"class="btn btn-info" role="button">Link</a>'}},
-		{ "data": null, "defaultContent":"<button id=\"Add\">Add!</button>"},
+		{ "data": null, "defaultContent":"<button type=\"button\" class=\"btn btn-primary\" id=\"Add\">Add!</button>"},
 		{ "data": "id"}],
 		});
 		//get form values
@@ -125,7 +126,7 @@
 
 			}		
 		}
-		request.send("data=" + table);
+		request.send("email=" + email + "&data=" + table);
 	}
 	//get form values
 	function getValues(){
@@ -160,6 +161,7 @@
 	{
 		//obj = response;
 		obj = JSON.parse(JSON.parse(response));
+		console.log(obj);
 		updateTable();	 	
 	}
 	//handle the server respponse
@@ -182,7 +184,7 @@
 		
 		if ((this.readyState == 4)&&(this.status == 200))
 		{
-			handleSessionReply(this.responseText);				
+			handleSessionReply(JSON.parse(this.responseText));				
 		}		
 	}
 	request.send("request=get");
@@ -190,8 +192,9 @@
 	//handle the session reply
 	function handleSessionReply(response){
 		if(response != ""){
-			$('.dropdown-toggle').text(response);
-			user = response;
+			user = response[0];
+			email = response[1];
+			$('.dropdown-toggle').text(user);
 		}
 		else{
 			alert("Your session has expired. Please login again.");
@@ -212,6 +215,7 @@
   </div>
 	<ul class="nav navbar-nav">
 		<li class="active"><a href="datasearch.html">Home</a></li>
+		<li><a href="recommended.html">Recommended</a></li>
 		<li><a href="watchlist.html">Watchlist</a></li>
 		<li><a href="graphs.html">Graph</a></li>
 	</ul>
@@ -221,14 +225,14 @@
 			<span class="dropdown-caret"></span></a>
 			<ul class="dropdown-menu">
 			<li><a href="index.html">Logout</a></li>
-			<li><a href="#">Settings</a></li>
+			<li><a href="myprofile.html">Profile</a></li>
 			</ul>
 		</li>
     </ul>
 </div>  
 </nav>
 
-<div class="container" style="width:80%">
+<div class="container" style="width:90%">
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="row">

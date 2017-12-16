@@ -1,5 +1,5 @@
 <?php
-include("../../../home/alex/git/it490f17/testRabbitMQClient.php");
+include("../../../home/alex/git/it490f17/rabbitMQClient.php");
 include("writeLogs.php");
 //if post message is not set
 if (!isset($_POST))
@@ -23,9 +23,10 @@ switch ($postRequest["data"])
 		$password = $postRequest["password"];
 		$email = $postRequest["email"];
 		$hashedPass = sha1($password);//hash the pass
-		$hashedEmail = sha1($email);//hash the email
 		$postRequest["password"] = $hashedPass;
-		$postRequest["email"] = $hashedEmail;
+		$response = createClient($postRequest);
+	break;
+	case "getUserEmail":
 		$response = createClient($postRequest);
 	break;
 	case "listings":
@@ -43,11 +44,23 @@ switch ($postRequest["data"])
 	case "watchlist":
 		$response = createClient($postRequest);
 	break;
+	case "recommendedListings":
+		$response = createClient($postRequest);
+	break;
 	case "graphData":
 		$response = createClientDMZ($postRequest);
 	break;
 	case "getTodaysListings":
 		$response = createClientDMZ($postRequest);
+	break;
+	case "addSkill":
+		$response = createClient($postRequest);
+	break;
+	case "removeSkill":
+		$response = createClient($postRequest);
+	break;
+	case "getSkills":
+		$response = createClient($postRequest);
 	break;
 }
 //write to log file

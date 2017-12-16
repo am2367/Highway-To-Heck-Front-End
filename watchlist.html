@@ -39,7 +39,7 @@ $(document).ready(function(){
 		{ "data": "how_to_apply" },
 		{ "data": "url", "render": function(data, type, row, meta){
 		return '<a href="' + data + '"class="btn btn-info" role="button">Link</a>'}},
-		{ "data": null, "defaultContent":"<button id=\"Remove\">Remove!</button>"},
+		{ "data": null, "defaultContent":"<button type=\"button\" class=\"btn btn-primary\" id=\"Remove\">Remove!</button>"},
 		{ "data": "id"}],
 		});
 		
@@ -84,7 +84,7 @@ function getSession(){
 		
 		if ((this.readyState == 4)&&(this.status == 200))
 		{
-			handleSessionReply(this.responseText);				
+			handleSessionReply(JSON.parse(this.responseText));				
 		}		
 	}
 	request.send("request=get");
@@ -92,8 +92,9 @@ function getSession(){
 //handle the session reply from the server
 function handleSessionReply(response){
 		if(response != ""){
-			$('.dropdown-toggle').text(response);
-			user = response;
+			user = response[0];
+			email = response[1];
+			$('.dropdown-toggle').text(user);
 			getListingIDs(user);
 		}
 		else{
@@ -120,11 +121,12 @@ function getListingIDs(user){
 //handle the listing ID response from the server
 function handleListingIDsResponse(response)
 {
-	if (response == true){
+	if (response){
 		getListings(response);
 	}
-	else
+	else{
 		alert("Watchlist is empty!");
+	}
 }
 //get the listings for the IDs from the API
 function getListings(IDs){
@@ -163,12 +165,13 @@ $(document).on('click', '#Remove', function(){
 
 <!-- nav bar -->
 <nav class="navbar navbar-inverse navbar-fixed-top" id="nav">
-<div class="container">
+<div class="container"  style="width:90%">
   <div class="navbar-header">
 	<a class="navbar-brand" href="#">Highway to Heck</a>
   </div>
 	<ul class="nav navbar-nav">
 		<li><a href="datasearch.html">Home</a></li>
+		<li><a href="recommended.html">Recommended</a></li>
 		<li class="active"><a href="watchlist.html">Watchlist</a></li>
 		<li><a href="graphs.html">Graph</a></li>
 	</ul>
@@ -178,14 +181,14 @@ $(document).on('click', '#Remove', function(){
 			<span class="dropdown-caret"></span></a>
 			<ul class="dropdown-menu">
 			<li><a href="index.html">Logout</a></li>
-			<li><a href="#">Settings</a></li>
+			<li><a href="myprofile.html">Profile</a></li>
 			</ul>
 		</li>
     </ul>
 </div>  
 </nav>
 
-<div class="container">
+<div class="container" style="width=90%">
 	<div class="panel panel-default">
 		<div class="panel panel-body">
 		 <table id="watchlist" class="table table-striped table-bordered" width="100%" cellspacing="0">

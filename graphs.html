@@ -82,7 +82,7 @@
 		
 				if ((this.readyState == 4)&&(this.status == 200))
 				{
-					handleSessionReply(this.responseText);				
+					handleSessionReply(JSON.parse(this.responseText));				
 				}		
 			}
 			request.send("request=get");
@@ -90,8 +90,9 @@
 
 		function handleSessionReply(response){
 			if(response != ""){
-				$('.dropdown-toggle').text(response);
-				user = response;
+				user = response[0];
+				email = response[1];
+				$('.dropdown-toggle').text(user);
 			}
 			else{
 				alert("Your session has expired. Please login again.");
@@ -135,6 +136,7 @@
   </div>
 	<ul class="nav navbar-nav">
 		<li><a href="datasearch.html">Home</a></li>
+		<li><a href="recommended.html">Recommended</a></li>
 		<li><a href="watchlist.html">Watchlist</a></li>
 		<li class="active"><a href="graphs.html">Graph</a></li>
 	</ul>
@@ -144,7 +146,7 @@
 			<span class="dropdown-caret"></span></a>
 			<ul class="dropdown-menu">
 			<li><a href="index.html">Logout</a></li>
-			<li><a href="graphs.html">Settings</a></li>
+			<li><a href="myprofile.html">Settings</a></li>
 			</ul>
 		</li>
     </ul>
