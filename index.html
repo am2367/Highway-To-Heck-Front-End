@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <h1 align="center">Highway to Heck</h1>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -11,33 +10,48 @@
     <title>Signin Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.0/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
 
     <!-- Custom styles for this template -->
     <link href="signin.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="styling.css"/>
+	
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   </head>
   <body>
-    <div class="container">
-
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputName" class="sr-only">Username</label>
-        <input type="username" id="inputName" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitLogin()">Sign in</button>
-	<button class="btn btn-lg btn-primary btn-block" type="button" onclick="registerPage()">Register</button>
-      </form> 
+    <div class="container" id="login-container">
+	<div class="panel panel-default" id="login-panel">
+		<div class="panel-heading"><h1 align="center">Highway to Heck</h1></div>
+		<div class="panel-body">
+		      <form class="form-signin">
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<label for="inputName" class="sr-only">Username</label>
+			<input type="username" id="inputName" class="form-control" placeholder="Username" required autofocus>
+			<label for="inputPassword" class="sr-only">Password</label>
+			<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+			<div class="checkbox">
+			  <label>
+			    <input type="checkbox" value="remember-me"> Remember me
+			  </label>
+			</div>
+			<button class="btn btn-lg btn-primary btn-block" type="button" onclick="submitLogin()">Sign in</button>
+			<button class="btn btn-lg btn-primary btn-block" type="button" onclick="registerPage()">Register</button>
+		      </form> 
+		</div>
+	</div>
     </div> 
     <script src="js/ie10-viewport-bug-workaround.js"></script>
 	<script>
+/*
+login page functionality
+
+@author  Alex Markenzon
+@since   September
+@version 3
+*/
 
 //Stop all currently running sessions
 $(document).ready(function(){

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.0/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" href="styling.css"/>
     
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -19,16 +20,24 @@
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> 
     <script src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/ellipsis.js"></script>
 <script>
+/*
+profile page functionality
+
+@author  Alex Markenzon
+@since   November
+@version 2
+*/
 
 	$(document).ready(function(){
 		var obj;
 		var user;
 		//get current session
 		getSession();
+		//adds or removes skills from the list
 		$(document).on('click', '.btn-add', function(e)
 	    	{
 			e.preventDefault();
-			
+			//add skill
 			addSkill($(this).parents('.entry:first').find('input').val())
 			var controlForm = $('.controls form:first'),
 			    currentEntry = $(this).parents('.entry:first'),
@@ -40,8 +49,9 @@
 			    .removeClass('btn-success').addClass('btn-danger')
 			     
 			    .html('<span class="glyphicon glyphicon-minus"></span>');
+			//remove skill
 			controlForm.find('.entry:not(:last) input').prop("disabled", true);
-		 }).on('click', '.btn-remove', function(e){
+		 	}).on('click', '.btn-remove', function(e){
 			removeSkill($(this).parents('.entry:first').find('input').val());
 			$(this).parents('.entry:first').remove();
 
@@ -76,6 +86,7 @@
 			window.location.href='index.html';
 		}	
 	}
+	//add skill to db
 	function addSkill(skill){
 		var request = new XMLHttpRequest();
 		request.open("POST","handleRequests.php",true);
@@ -91,6 +102,7 @@
 		}
 		request.send("data=addSkill" + "&user=" + user + "&skill=" + skill);
 	}
+	//remove skill from db
 	function removeSkill(skill){
 		var request = new XMLHttpRequest();
 		request.open("POST","handleRequests.php",true);
@@ -106,6 +118,7 @@
 		}
 		request.send("data=removeSkill" + "&user=" + user + "&skill=" + skill);
 	}
+	//get skill list from db
 	function getSkills(){
 		var request = new XMLHttpRequest();
 		request.open("POST","handleRequests.php",true);
@@ -121,11 +134,14 @@
 		}
 		request.send("data=getSkills" + "&user=" + user);
 	}
+	//handle skill list reply and populate skill list
 	function handleSkillsList(response){
 		
 		obj = JSON.parse(response);
 		
 		var skills = obj['status'];
+
+		//populate skill list
 		$.each(skills, function(data){
 			var controlForm = $('.controls form:first');
 			currentEntry = $(document).find('.entry:last');

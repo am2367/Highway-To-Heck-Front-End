@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.0/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
-    
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <link rel="stylesheet" href="styling.css"/>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
@@ -22,7 +23,13 @@
 
 </head>
 <script>
+/*
+functionality for recommended jobs page
 
+@author  Alex Markenzon
+@since   November
+@version 2
+*/
 
 $(document).ready(function(){		
 		var obj;
@@ -75,6 +82,7 @@ function handleSessionReply(response){
 			user = response[0];
 			email = response[1];
 			$('.dropdown-toggle').text(user);
+			getSkills();
 		}
 		else{
 			alert("Your session has expired. Please login again.");
@@ -97,6 +105,7 @@ function getSkills(){
 		}
 		request.send("data=getSkills" + "&user=" + user);
 }
+//handle the skills list reply
 function handleSkillsList(response){
 		
 		obj = JSON.parse(response);
@@ -125,7 +134,6 @@ function handleListingResponse(response)
 		//obj = response;
 		obj = JSON.parse(response);
 		obj = Object.values(obj);
-		console.log(obj);
 		
 		updateTable();	 	
 	}

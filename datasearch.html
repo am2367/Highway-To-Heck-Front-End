@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.0/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" href="styling.css"/>
     
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -21,13 +22,20 @@
 <script>
 
 	$(document).ready(function(){
+		/*
+		handles datasearch page functionality
+
+		@author  Alex Markenzon
+		@since   September
+		@version 5
+		*/
 		var obj;
 		var user;
 		var email;
 		//get current session
 		getSession();
 		//get todays listings to send through email to user
-		//getTodaysListings();
+		getTodaysListings();
 		//create datatable
 		Table = $('#example').DataTable({
 		data:obj, dataSrc: "", responsive:true, "proccessing":true,
@@ -93,25 +101,32 @@
 	//handle the response from the server 
 	function handleTodaysListings(response){
 		response = JSON.parse(response);
-		//create table variable to hold listing data in html format
-		var table = "<html><body><table><thead><tr><th>Position Title</th><th>Company</th><th>Location</th>" +
-			"<th>Position Type</th><th>Description</th><th>Date Posted</th><th>How to Apply</th><th>Link</th>" +
-				"<th>Add to Watchlist</th><th>ID</th></tr></thead><tbody>";
-		$.each(response, function () {
-    		var eachrow = "<tr>" + "<td>" + response["created_at"] + "</td>"
-		         + "<td>" + response["title"] + "</td>"
-		         + "<td>" + response["location"] + "</td>"
-		         + "<td>" + response["type"] + "</td>"
-			 + "<td>" + response["description"] + "</td>"
-			 + "<td>" + response["how_to_apply"] + "</td>"
-			 + "<td>" + response["company"] + "</td>"
-			 + "<td>" + response["url"] + "</td>"
-		         + "</tr>";
-		table += eachrow;
-		});
-		table += "</tbody></table></body></html>";
-		//send email
-		sendMail(table);
+		console.log(response);
+		if (response.length != 0){
+			//create table variable to hold listing data in html format
+			var table = "<html><body><table><thead><tr><th>Position Title</th><th>Company</th><th>Location</th>" +
+				"<th>Position Type</th><th>Description</th><th>Date Posted</th><th>How to Apply</th><th>Link</th>" +
+					"<th>Add to Watchlist</th><th>ID</th></tr></thead><tbody>";
+			for (index in response) {
+	    		var eachrow = "<tr>" + "<td>" + response[index]["created_at"] + "</td>"
+				 + "<td>" + response[index]["title"] + "</td>"
+				 + "<td>" + response[index]["location"] + "</td>"
+				 + "<td>" + response[index]["type"] + "</td>"
+				 + "<td>" + response[index]["description"] + "</td>"
+				 + "<td>" + response[index]["how_to_apply"] + "</td>"
+				 + "<td>" + response[index]["company"] + "</td>"
+				 + "<td>" + response[index]["url"] + "</td>"
+				 + "</tr>";
+			table += eachrow;
+			};
+			console.log(table);
+			table += "</tbody></table></body></html>";
+			//send email
+			sendMail(table);
+		}
+		else
+			sendMail("No new listings today!");
+		
 	}
 	//send todays listings to user
 	function sendMail(table){
@@ -235,8 +250,8 @@
 <div class="container" style="width:90%">
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<div class="row">
-				<div class="col-lg-10">
+			<div class="row text-center">
+				<div class="col-lg-12">
 				  	<p>Vehicle Type</p>
 					<form class="form-inline">
 						<div class="well">

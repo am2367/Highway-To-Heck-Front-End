@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.0/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
-    
+    <link rel="stylesheet" href="styling.css"/>  
+
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -20,6 +21,13 @@
     <script src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/ellipsis.js"></script>
 </head>
 <script>
+/*
+functionality for watchlist
+
+@author  Alex Markenzon
+@since   October
+@version 3
+*/
 
 $(document).ready(function(){		
 		var obj;
@@ -74,6 +82,21 @@ function handleRemove(response, button){
 		else
 			alert("There was an error removing the listing from your watchlist! Please try again.")
 }
+//remove all IDs from watchlist
+function clearWatchlist(){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+							
+			}		
+		}
+		request.send("data=clearWatchlist" + "&user=" + user);	
+}
 //get the current session
 function getSession(){
 	var request = new XMLHttpRequest();
@@ -121,7 +144,7 @@ function getListingIDs(user){
 //handle the listing ID response from the server
 function handleListingIDsResponse(response)
 {
-	if (response){
+	if (response != '"No listings"'){
 		getListings(response);
 	}
 	else{
@@ -138,18 +161,24 @@ function getListings(IDs){
 		
 			if ((this.readyState == 4)&&(this.status == 200))
 			{
-				handleListingResponse(this.responseText);	
+				handleListingResponse(this.responseText, IDs);	
 			}		
 		}
 		request.send("data=watchlist" + "&description=" + IDs);
 	}
-//handle the response form the server
-function handleListingResponse(response)
+//handle the response from the server
+function handleListingResponse(response, IDs)
 	{
 		//obj = response;
 		obj = JSON.parse(response);
-		obj = JSON.parse(obj);
-		updateTable();	 	
+		if(obj != ""){
+			obj = JSON.parse(obj);
+			updateTable();
+		}
+		else{
+			clearWatchlist();
+			alert("Those listings are no longer available and have been removed from your watchlist!");
+		}				 	
 	}
 //execute remove function on remove click
 $(document).on('click', '#Remove', function(){

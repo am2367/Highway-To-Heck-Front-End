@@ -1,5 +1,13 @@
 <?php
 
+/*
+send email to passed email with passed data
+
+@author  Alex Markenzon
+@since   October
+@version 2
+*/
+
 $table = $_POST["data"];
 $to = $_POST['email'];
 //$to = "alex.markenzon@yahoo.com";

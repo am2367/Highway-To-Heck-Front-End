@@ -10,13 +10,17 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.0/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
-    
+    <link rel="stylesheet" href="styling.css"/>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.0/js/dataTables.responsive.js"></script>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <style>
+
+/* Styling for the loader */
+
 #loader {
   position: absolute;
   left: 50%;
@@ -45,7 +49,15 @@
 }
 </style>
 	<script>
+/*
+scripts for graph functionality
+
+@author  Alex Markenzon
+@since   October
+@version 2
+*/
 	$(document).ready(function(){
+		//create chart object
 		var chart = new CanvasJS.Chart("chartContainer", {
 			animationEnabled: true,
 	
@@ -73,6 +85,8 @@
 		var dataPoints = [];
 		getSession();
 		getGraphData();
+
+		//get current session
 		function getSession(){
 			var request = new XMLHttpRequest();
 			request.open("POST","sessions.php",true);
@@ -87,7 +101,7 @@
 			}
 			request.send("request=get");
 			}
-
+		//handle session response from server			
 		function handleSessionReply(response){
 			if(response != ""){
 				user = response[0];
@@ -99,6 +113,7 @@
 				window.location.href='index.html';
 			}	
 		}
+		//get data for graph
 		function getGraphData(){
 			var request = new XMLHttpRequest();
 			request.open("POST","handleRequests.php",true);
@@ -113,6 +128,7 @@
 			}
 			request.send("data=graphData");
 		}
+		//handle graph data response
 		function handleGraphDataResponse(response){
 			$.each(response, function(key, value){
         			dataPoints.push({y: value, label: key});

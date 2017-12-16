@@ -1,4 +1,13 @@
 <?php
+
+/*
+handles and routes requests from the front end to the client and creates new client for each request
+
+@author  Alex Markenzon
+@since   September
+@version 5
+*/
+
 include("../../../home/alex/git/it490f17/rabbitMQClient.php");
 include("writeLogs.php");
 //if post message is not set
@@ -38,6 +47,9 @@ switch ($postRequest["data"])
 	case "removeFromWatchlist":
 		$response = createClient($postRequest);
 	break;
+	case "clearWatchlist":
+		$response = createClient($postRequest);
+	break;
 	case "getListingsFromWatchlist":
 		$response = createClient($postRequest);
 	break;
@@ -65,6 +77,7 @@ switch ($postRequest["data"])
 }
 //write to log file
 writeLogs(json_encode($response));
+
 //turn the response into a JSON object
 echo json_encode($response);
 exit(0);
