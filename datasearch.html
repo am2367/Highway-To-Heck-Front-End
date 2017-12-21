@@ -29,13 +29,16 @@
 		@since   September
 		@version 5
 		*/
+		var sent;
 		var obj;
 		var user;
 		var email;
 		//get current session
 		getSession();
 		//get todays listings to send through email to user
-		getTodaysListings();
+		if(sent==false){
+			getTodaysListings();
+		}
 		//create datatable
 		Table = $('#example').DataTable({
 		data:obj, dataSrc: "", responsive:true, "proccessing":true,
@@ -101,12 +104,10 @@
 	//handle the response from the server 
 	function handleTodaysListings(response){
 		response = JSON.parse(response);
-		console.log(response);
+
 		if (response.length != 0){
 			//create table variable to hold listing data in html format
-			var table = "<html><body><table><thead><tr><th>Position Title</th><th>Company</th><th>Location</th>" +
-				"<th>Position Type</th><th>Description</th><th>Date Posted</th><th>How to Apply</th><th>Link</th>" +
-					"<th>Add to Watchlist</th><th>ID</th></tr></thead><tbody>";
+			var table = "<html><body>";
 			for (index in response) {
 	    		var eachrow = "<tr>" + "<td>" + response[index]["created_at"] + "</td>"
 				 + "<td>" + response[index]["title"] + "</td>"
@@ -119,13 +120,14 @@
 				 + "</tr>";
 			table += eachrow;
 			};
-			console.log(table);
-			table += "</tbody></table></body></html>";
+	
+			table += "</body></html>";
 			//send email
 			sendMail(table);
 		}
 		else
 			sendMail("No new listings today!");
+		setToSent();
 		
 	}
 	//send todays listings to user
@@ -176,7 +178,6 @@
 	{
 		//obj = response;
 		obj = JSON.parse(JSON.parse(response));
-		console.log(obj);
 		updateTable();	 	
 	}
 	//handle the server respponse
@@ -209,12 +210,29 @@
 		if(response != ""){
 			user = response[0];
 			email = response[1];
+			sent = response[2];
+			console.log(response);
 			$('.dropdown-toggle').text(user);
 		}
 		else{
 			alert("Your session has expired. Please login again.");
 			window.location.href='index.html';
 		}	
+	}
+	//set session sent variable to True
+	function setToSent(){
+	var request = new XMLHttpRequest();
+	request.open("POST","sessions.php",true);
+	request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	request.onreadystatechange= function()
+	{
+		
+		if ((this.readyState == 4)&&(this.status == 200))
+		{
+							
+		}		
+	}
+	request.send("request=setToSent");
 	}
 	});
 </script>

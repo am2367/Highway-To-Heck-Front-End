@@ -114,6 +114,7 @@ function getSession(){
 }
 //handle the session reply from the server
 function handleSessionReply(response){
+		console.log(response);
 		if(response != ""){
 			user = response[0];
 			email = response[1];

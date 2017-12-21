@@ -49,7 +49,7 @@ $(document).ready(function(){
 		{ "data": "how_to_apply" },
 		{ "data": "url", "render": function(data, type, row, meta){
 		return '<a href="' + data + '"class="btn btn-info" role="button">Link</a>'}},
-		{ "data": null, "defaultContent":"<button type=\"button\" class=\"btn btn-primary\" id=\"Interested\">Interested</button><button type=\"button\"class=\"btn btn-primary\" id=\"Uninterested\">Uninterested</button>"},
+		{ "data": null, "defaultContent":"<button type=\"button\" class=\"btn btn-primary\" id=\"Interested\">Interested</button>"},
 		{ "data": "id"}]
 		});
 		
@@ -137,14 +137,68 @@ function handleListingResponse(response)
 		
 		updateTable();	 	
 	}
+//get listing for that ID
+function getListing(ID){
+		var request = new XMLHttpRequest();
+		request.open("POST","handleRequests.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+				handleListingIDResponse(this.responseText, ID);	
+			}		
+		}
+		request.send("data=watchlist" + "&description=" + ID);
+	}
+//handle the response from the server
+function handleListingIDResponse(response, ID){
+		response = JSON.parse(response);
+		response = JSON.parse(response);
+		
+		var table = "<html><body>";
+			for (index in response) {
+			//console.log(response[index]);
+	    		var eachrow = "<tr>" + "<td>" + response[index]["created_at"] + "</td>"
+				 + "<td>" + response[index]["title"] + "</td>"
+				 + "<td>" + response[index]["location"] + "</td>"
+				 + "<td>" + response[index]["type"] + "</td>"
+				 + "<td>" + response[index]["description"] + "</td>"
+				 + "<td>" + response[index]["how_to_apply"] + "</td>"
+				 + "<td>" + response[index]["company"] + "</td>"
+				 + "<td>" + response[index]["url"] + "</td>"
+				 + "</tr>";
+			table += eachrow;
+			};
+	
+			table += "</body></html>";
+			
+			sendMail(table);
+			alert("Sent to email!");			 	
+	}
+function sendMail(table){
+		var request = new XMLHttpRequest();
+		request.open("POST","sendMail.php",true);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.onreadystatechange= function()
+		{
+		
+			if ((this.readyState == 4)&&(this.status == 200))
+			{
+
+			}		
+		}
+		request.send("email=" + email + "&data=" + table);
+	}
 //set button pressed
 $(document).on('click', '#Interested', function(){
-		//var id = (($(this).parents('tr'))[0]).lastChild.textContent;
+		var id = (($(this).parents('tr'))[0]).lastChild.textContent;
 		$(this).toggleClass("active");
-});
-$(document).on('click', '#Uninterested', function(){
-		//var id = (($(this).parents('tr'))[0]).lastChild.textContent;
-		$(this).toggleClass("active");
+		id = [[id]];
+		console.log(id)
+		console.log(JSON.stringify(id));
+		getListing(JSON.stringify(id));
 });
 		
 });

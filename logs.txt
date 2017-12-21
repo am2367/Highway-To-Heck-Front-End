@@ -95,3 +95,165 @@
 2017-12-20 18:43:37	{"status":false,"message":"Database server received request and processed"}
 2017-12-20 18:43:50	{"status":true,"message":"Database server received request and processed"}
 2017-12-20 18:43:50	{"status":{"email":"test@test.com"},"message":"Database server received request and processed"}
+2017-12-20 19:17:51	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 19:17:57	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 19:18:07	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 19:18:07	{"status":{"email":"test@test.com"},"message":"Database server received request and processed"}
+2017-12-20 19:18:16	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 19:20:25	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 19:20:32	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 19:27:19	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 19:27:26	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:09:10	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:09:18	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:09:23	From DMZ server: String is too long to print because it has 2 characters
+2017-12-20 20:10:07	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:10:09	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:10:24	From DMZ server: String is too long to print because it has 2 characters
+2017-12-20 20:11:28	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:11:35	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:11:55	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:11:58	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:12:00	From DMZ server: String is too long to print because it has 2 characters
+2017-12-20 20:15:31	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:15:31	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:16:53	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:17:04	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:22:09	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:22:17	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:25:50	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:25:57	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:34:27	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:34:34	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:35:57	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:35:59	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:37:31	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:37:48	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:38:24	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 20:38:32	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 20:48:13	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 20:48:13	{"status":{"email":"test@test.com"},"message":"Database server received request and processed"}
+2017-12-20 20:48:20	From DMZ server: String is too long to print because it has 11282 characters
+2017-12-20 20:49:55	{"status":"No listings","message":"Database server received request and processed"}
+2017-12-20 20:50:03	{"status":1,"message":"Database server received request and processed"}
+2017-12-20 20:50:08	{"status":1,"message":"Database server received request and processed"}
+2017-12-20 20:50:11	{"status":1,"message":"Database server received request and processed"}
+2017-12-20 20:50:14	{"status":"No listings","message":"Database server received request and processed"}
+2017-12-20 20:50:18	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 20:50:29	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 20:50:33	From DMZ server: String is too long to print because it has 11282 characters
+2017-12-20 20:50:36	From DMZ server: String is too long to print because it has 222183 characters
+2017-12-20 20:50:44	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 20:50:46	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 20:50:47	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 20:50:48	From DMZ server: String is too long to print because it has 194 characters
+2017-12-20 20:50:52	From DMZ server: String is too long to print because it has 17000 characters
+2017-12-20 20:56:28	From DMZ server: String is too long to print because it has 194 characters
+2017-12-20 20:56:37	From DMZ server: String is too long to print because it has 17000 characters
+2017-12-20 20:58:12	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 20:58:18	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 20:59:38	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 20:59:48	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:01:04	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:01:20	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:02:53	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:03:04	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:04:06	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:04:18	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:04:25	From DMZ server: String is too long to print because it has 2 characters
+2017-12-20 21:07:05	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:07:17	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:07:20	From DMZ server: String is too long to print because it has 2 characters
+2017-12-20 21:07:35	From DMZ server: String is too long to print because it has 194 characters
+2017-12-20 21:07:42	From DMZ server: String is too long to print because it has 17000 characters
+2017-12-20 21:08:00	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:08:05	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:08:38	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:08:45	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:08:53	From DMZ server: String is too long to print because it has 75813 characters
+2017-12-20 21:13:33	From DMZ server: String is too long to print because it has 11282 characters
+2017-12-20 21:14:19	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:14:27	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:14:31	From DMZ server: String is too long to print because it has 75813 characters
+2017-12-20 21:15:42	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:15:53	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:16:58	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:17:09	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:17:21	From DMZ server: String is too long to print because it has 75813 characters
+2017-12-20 21:18:14	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:18:23	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:18:36	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:20:46	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:20:56	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:20:59	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:22:26	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:22:31	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:22:34	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:23:26	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:23:37	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:24:55	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:26:41	From DMZ server: String is too long to print because it has 11282 characters
+2017-12-20 21:30:17	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:30:20	From DMZ server: String is too long to print because it has 11282 characters
+2017-12-20 21:30:26	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:30:30	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:31:51	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:31:57	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:32:40	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:34:09	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:34:15	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:35:27	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:36:07	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:36:13	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:36:16	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:36:45	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:36:51	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:36:54	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:37:36	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:37:47	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:37:49	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:38:19	{"status":[["Java"],["PHP"],["Python"]],"message":"Database server received request and processed"}
+2017-12-20 21:38:24	From DMZ server: String is too long to print because it has 181464 characters
+2017-12-20 21:38:26	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:39:08	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 21:39:13	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 21:39:13	From DMZ server: String is too long to print because it has 106 characters
+2017-12-20 21:39:15	From DMZ server: String is too long to print because it has 11282 characters
+2017-12-20 21:40:28	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 21:40:35	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 21:40:38	From DMZ server: String is too long to print because it has 9154 characters
+2017-12-20 21:41:27	From DMZ server: String is too long to print because it has 3208 characters
+2017-12-20 21:44:43	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 21:44:51	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 21:45:09	From DMZ server: String is too long to print because it has 9154 characters
+2017-12-20 21:46:05	From DMZ server: String is too long to print because it has 4622 characters
+2017-12-20 21:49:18	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 21:49:49	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 21:49:49	{"status":{"email":"ek225@njit.edu"},"message":"Database server received request and processed"}
+2017-12-20 21:49:56	From DMZ server: String is too long to print because it has 11282 characters
+2017-12-20 21:50:36	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 21:50:38	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 21:51:02	From DMZ server: String is too long to print because it has 4190 characters
+2017-12-20 21:57:24	"{\"Java\":24,\"Python\":23,\"C#\":24,\"PHP\":8,\"HTML\":14,\"CSS\":15,\"Javascript\":38}"
+2017-12-20 21:58:32	{"status":"No listings","message":"Database server received request and processed"}
+2017-12-20 22:03:01	"{\"Java\":24,\"Python\":23,\"C#\":24,\"PHP\":8,\"HTML\":14,\"CSS\":15,\"Javascript\":38}"
+2017-12-20 22:03:08	"{\"Java\":24,\"Python\":23,\"C#\":24,\"PHP\":8,\"HTML\":14,\"CSS\":15,\"Javascript\":38}"
+2017-12-20 22:03:27	"{\"Java\":24,\"Python\":23,\"C#\":24,\"PHP\":8,\"HTML\":14,\"CSS\":15,\"Javascript\":38}"
+2017-12-20 22:04:34	"{\"Java\":24,\"Python\":23,\"C#\":24,\"PHP\":8,\"HTML\":14,\"CSS\":15,\"Javascript\":38}"
+2017-12-20 22:05:22	"{\"Java\":24,\"Python\":23,\"C#\":24,\"PHP\":8,\"HTML\":14,\"CSS\":15,\"Javascript\":38}"
+2017-12-20 22:05:59	"{\"Java\":24,\"Python\":23,\"C#\":24,\"PHP\":8,\"HTML\":14,\"CSS\":15,\"Javascript\":38}"
+2017-12-20 22:06:14	"{\"Java\":24,\"Python\":23,\"C#\":24,\"PHP\":8,\"HTML\":14,\"CSS\":15,\"Javascript\":38}"
+2017-12-20 22:06:17	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 22:06:19	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 22:19:40	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 22:19:48	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 22:19:49	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 22:19:56	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 22:19:57	From DMZ server: String is too long to print because it has 106 characters
+2017-12-20 22:19:58	From DMZ server: String is too long to print because it has 11282 characters
+2017-12-20 22:20:40	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 22:20:43	From DMZ server: String is too long to print because it has 220628 characters
+2017-12-20 22:20:46	From DMZ server: String is too long to print because it has 11282 characters
+2017-12-20 22:22:01	From DMZ server: String is too long to print because it has 11282 characters
+2017-12-20 22:26:11	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 22:26:19	From DMZ server: String is too long to print because it has 220628 characters
