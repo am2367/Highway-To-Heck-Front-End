@@ -88,3 +88,10 @@
 2017-12-16 00:38:44	{"status":"No listings","message":"Database server received request and processed"}
 2017-12-16 00:38:49	From DMZ server: String is too long to print because it has 108 characters
 2017-12-16 00:39:01	From DMZ server: String is too long to print because it has 235222 characters
+2017-12-20 18:34:16	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 18:34:35	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 18:34:41	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 18:43:31	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 18:43:37	{"status":false,"message":"Database server received request and processed"}
+2017-12-20 18:43:50	{"status":true,"message":"Database server received request and processed"}
+2017-12-20 18:43:50	{"status":{"email":"test@test.com"},"message":"Database server received request and processed"}

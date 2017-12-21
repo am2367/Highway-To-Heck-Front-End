@@ -24,14 +24,14 @@ switch ($postRequest["data"])
 {
 	case "login":
 		$password = $postRequest["password"];
-		$hashedPass = sha1($password);//hash the pass
-		$postRequest["password"] = $hashedPass;
+		//$hashedPass = sha1($password);//hash the pass
+		//$postRequest["password"] = $hashedPass;
 		$response = createClient($postRequest);
 	break;
 	case "register":
 		$password = $postRequest["password"];
 		$email = $postRequest["email"];
-		$hashedPass = sha1($password);//hash the pass
+		$hashedPass = password_hash($password, PASSWORD_DEFAULT);//hash the pass
 		$postRequest["password"] = $hashedPass;
 		$response = createClient($postRequest);
 	break;

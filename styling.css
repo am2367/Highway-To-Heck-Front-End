@@ -9,6 +9,14 @@ body{
 	background-color: #5c5757 !important;
 }
 
+#description{
+	width: 350px;
+}
+
+#location{
+	width:300px
+}
+
 #login-panel{
 	width:40%;
 }
